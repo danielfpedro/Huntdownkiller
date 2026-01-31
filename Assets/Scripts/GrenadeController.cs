@@ -53,7 +53,7 @@ public class GrenadeController : Projectile
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
         foreach (Collider2D hit in hits)
         {
-            GoreController gc = hit.GetComponent<GoreController>();
+
             HealthController healthController = hit.GetComponent<HealthController>();
             float distance = Vector2.Distance(transform.position, hit.transform.position);
             float force = Mathf.Max(0f, 1f - (distance / radius));
@@ -61,8 +61,11 @@ public class GrenadeController : Projectile
             {
                 int resultingHealth = healthController.currentHealth - (int)(baseDamage * force);
                 healthController.TakeDamage((int)(baseDamage * force));
+
+                GoreController gc = hit.GetComponent<GoreController>();
                 if (gc != null && resultingHealth <= 0)
                 {
+                    Debug.Log("Exploding body with force: " + force);
                     gc.ExplodeBody(transform, force);
                 }
             }
