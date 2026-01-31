@@ -63,7 +63,6 @@ public class GrenadeController : Projectile
                 healthController.TakeDamage((int)(baseDamage * force));
                 if (resultingHealth <= 0)
                 {
-                    gc.debugGrenade = gameObject;
                     gc.ExplodeBody(transform, force);
                 }
             }
