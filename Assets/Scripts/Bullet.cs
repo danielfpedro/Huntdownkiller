@@ -40,13 +40,7 @@ public class Bullet : MonoBehaviour
         if (health != null)
         {
             health.TakeDamage(damage, -transform.right);
-        }
-        
-        // Destroy (disable) bullet on impact
-        // Only disable if it hits something that isn't the player or trigger
-        if (!hitInfo.isTrigger) 
-        {
-             ReturnToPool();
+            ReturnToPool();
         }
     }
 

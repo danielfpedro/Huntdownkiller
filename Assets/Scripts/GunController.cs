@@ -37,7 +37,6 @@ public class GunController : MonoBehaviour
             createFunc: CreateBullet,
             actionOnGet: OnTakeFromPool,
             actionOnRelease: OnReturnToPool,
-            actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: true,
             defaultCapacity: defaultCapacity,
             maxSize: maxPoolSize
@@ -87,12 +86,6 @@ public class GunController : MonoBehaviour
     {
         bullet.SetActive(false);
     }
-
-    void OnDestroyPoolObject(GameObject bullet)
-    {
-        Destroy(bullet);
-    }
-
     #endregion
 
     void Shoot()
