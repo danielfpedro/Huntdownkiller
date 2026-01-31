@@ -4,16 +4,21 @@ using UnityEngine.InputSystem;
 public class InputController : MonoBehaviour
 {
   [Header("References")]
-  [Tooltip("The movement script to control.")]
-  public PlayerMovement playerMovement;
+  [Tooltip("The target game object with movement and weapons components.")]
+  public GameObject target;
 
   private InputSystem_Actions inputActions;
+  private PlayerMovement playerMovement;
   private WeaponsManager weaponsManager;
 
   void Awake()
   {
     inputActions = new InputSystem_Actions();
-    weaponsManager = playerMovement.gameObject.GetComponent<WeaponsManager>();
+    if (target != null)
+    {
+      playerMovement = target.GetComponent<PlayerMovement>();
+      weaponsManager = target.GetComponent<WeaponsManager>();
+    }
   }
 
   void OnEnable()
