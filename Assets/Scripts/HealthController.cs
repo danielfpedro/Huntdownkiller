@@ -74,12 +74,17 @@ public class HealthController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log("About to call show indicator: " + damage);
+        HitIndicatorManager.Instance.ShowIndicator(transform.position, damage.ToString());
         TakeDamage(damage, Vector2.zero);
     }
 
     public void TakeDamage(int damage, Vector2 hitDirection)
     {
         if (damage <= 0) return;
+
+        Debug.Log("About to call show indicator: " + damage);
+        HitIndicatorManager.Instance.ShowIndicator(transform.position, damage.ToString());
 
         currentHealth -= damage;
         currentHealth = Mathf.Max(0, currentHealth);
