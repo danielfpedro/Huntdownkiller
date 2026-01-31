@@ -169,6 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timeToExplode: 2
-  radius: 2
+  radius: 4
   baseDamage: 50
   shootForce: 10

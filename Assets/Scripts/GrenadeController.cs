@@ -57,11 +57,11 @@ public class GrenadeController : Projectile
             HealthController healthController = hit.GetComponent<HealthController>();
             float distance = Vector2.Distance(transform.position, hit.transform.position);
             float force = Mathf.Max(0f, 1f - (distance / radius));
-            if (gc != null && healthController != null)
+            if (healthController != null)
             {
                 int resultingHealth = healthController.currentHealth - (int)(baseDamage * force);
                 healthController.TakeDamage((int)(baseDamage * force));
-                if (resultingHealth <= 0)
+                if (gc != null && resultingHealth <= 0)
                 {
                     gc.ExplodeBody(transform, force);
                 }
