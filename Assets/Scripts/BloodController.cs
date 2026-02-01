@@ -9,6 +9,9 @@ public class BloodController : MonoBehaviour
 
     public Tilemap bloodTilemap;
     public List<TileBase> bloodTiles;
+    public float yOffset = 0.25f;
+
+    private Dictionary<Vector3Int, int> bloodLevels = new();
 
     void Start()
     {
@@ -22,13 +25,22 @@ public class BloodController : MonoBehaviour
         if (count > 0)
         {
             Vector3 worldPos = events[0].intersection;
-            worldPos.y -= 0.25f;
+            worldPos.y -= yOffset;
             // worldPos is the collision point in world space
 
             if (bloodTilemap != null && bloodTiles != null && bloodTiles.Count > 0)
             {
                 Vector3Int cellPos = bloodTilemap.WorldToCell(worldPos);
-                bloodTilemap.SetTile(cellPos, bloodTiles[0]);
+                if (!bloodLevels.ContainsKey(cellPos))
+                {
+                    bloodLevels[cellPos] = 0;
+                }
+                int currentLevel = bloodLevels[cellPos];
+                if (currentLevel < bloodTiles.Count)
+                {
+                    bloodLevels[cellPos] = currentLevel + 1;
+                    bloodTilemap.SetTile(cellPos, bloodTiles[currentLevel]);
+                }
             }
         }
 

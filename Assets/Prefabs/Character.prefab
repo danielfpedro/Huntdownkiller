@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138b364b99a1f7e49a516572d363fec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  maxHealth: 100
+  maxHealth: 1
   currentHealth: 0
   flashOnHurt: 1
   flashDuration: 0.02
@@ -681,6 +681,8 @@ MonoBehaviour:
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
+  SpriteRendererUpper: {fileID: 39469372645072991}
+  SpriteRendererLower: {fileID: 4818513411313188658}
 --- !u!114 &7429047184573675682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
   crouchSpeed: 2
-  jumpForce: 30
+  jumpForce: 34
   gravity: 100
   dashSpeed: 30
   dashDuration: 0.1

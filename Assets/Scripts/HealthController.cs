@@ -35,6 +35,8 @@ public class HealthController : MonoBehaviour
 
     private float flashTimer = 0f;
     private SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRendererUpper;
+    public SpriteRenderer SpriteRendererLower;
     private Color originalColor;
 
     void Start()
@@ -86,6 +88,23 @@ public class HealthController : MonoBehaviour
         Debug.Log("About to call show indicator: " + damage);
         HitIndicatorManager.Instance.ShowIndicator(transform.position, damage.ToString());
 
+        // Play blood particles
+        if (bloodParticleSystem != null)
+        {
+            if (hitDirection != Vector2.zero)
+            {
+                // Rotate 90 degrees if hit from right (blood sprays up), -90 if from left (down)
+                float rotationAngle = (hitDirection.x < 0) ? -90 : 90f;
+                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 0, rotationAngle);                // Offset X position based on hit direction
+                float offset = (hitDirection.x < 0) ? bloodOffsetX : -bloodOffsetX;
+                bloodParticleSystem.transform.localPosition = new Vector3(offset, 0, 0);
+            }
+            var emission = bloodParticleSystem.emission;
+            emission.rateOverTime = bloodEmissionRate;
+            bloodParticleSystem.Emit(10);
+            Invoke("StopBloodParticles", bloodPlayTime);
+        }
+
         currentHealth -= damage;
         currentHealth = Mathf.Max(0, currentHealth);
         onHurt?.Invoke(damage);
@@ -102,23 +121,6 @@ public class HealthController : MonoBehaviour
             {
                 flashTimer = flashDuration;
             }
-        }
-
-        // Play blood particles
-        if (bloodParticleSystem != null)
-        {
-            if (hitDirection != Vector2.zero)
-            {
-                // Rotate 90 degrees if hit from right (blood sprays up), -90 if from left (down)
-                float rotationAngle = (hitDirection.x < 0) ? -90 : 90f;
-                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 0, rotationAngle);                // Offset X position based on hit direction
-                float offset = (hitDirection.x < 0) ? bloodOffsetX : -bloodOffsetX;
-                bloodParticleSystem.transform.localPosition = new Vector3(offset, 0, 0);
-            }
-            var emission = bloodParticleSystem.emission;
-            emission.rateOverTime = bloodEmissionRate;
-            bloodParticleSystem.Play();
-            Invoke("StopBloodParticles", bloodPlayTime);
         }
 
         if (currentHealth <= 0)
@@ -140,9 +142,17 @@ public class HealthController : MonoBehaviour
     public void Die()
     {
         onDeath?.Invoke();
-        // Creative death: Maybe add some effects here, like particle explosion or sound
-        // For now, just disable the object
-        gameObject.SetActive(false);
+        SpriteRendererUpper.enabled = false;
+        SpriteRendererLower.enabled = false;
+        
+        // Disable all colliders on this game object
+        Collider2D[] colliders = GetComponents<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
+        }
+
+        Destroy(gameObject, 3f);
     }
 
     public void Revive()
