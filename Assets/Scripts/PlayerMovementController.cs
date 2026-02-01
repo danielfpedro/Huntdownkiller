@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;

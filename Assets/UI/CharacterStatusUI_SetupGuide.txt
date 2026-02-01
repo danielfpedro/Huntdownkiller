@@ -1,0 +1,57 @@
+Character Status UI Setup Guide
+===============================
+
+This guide shows how to set up the Character Status UI for health and stamina bars.
+
+1. Create a Canvas:
+   - Right-click in Hierarchy → UI → Canvas
+   - Set Canvas Scaler to "Scale With Screen Size"
+   - Reference Resolution: 1920x1080 (or your target resolution)
+
+2. Create Health Bar:
+   - Right-click on Canvas → UI → Image (name it "HealthBar")
+   - Set Color to red/green
+   - Add another Image as child (name it "HealthBarFill")
+   - Set HealthBarFill Image Type to "Filled"
+   - Set Fill Method to "Horizontal"
+   - Set Fill Origin to "Left"
+
+3. Create Stamina Bar:
+   - Right-click on Canvas → UI → Image (name it "StaminaBar")
+   - Set Color to blue/yellow
+   - Add another Image as child (name it "StaminaBarFill")
+   - Set StaminaBarFill Image Type to "Filled"
+   - Set Fill Method to "Horizontal"
+   - Set Fill Origin to "Left"
+
+4. Position the bars:
+   - Place them in corners (e.g., bottom-left for health, bottom-right for stamina)
+   - Adjust sizes as needed
+
+5. Create UI Manager GameObject:
+   - Create empty GameObject (name it "UIManager")
+   - Attach the CharacterStatusUI script
+   - Drag your player GameObject to "Player Target"
+   - Drag the HealthBarFill Image to "Health Bar Fill"
+   - Drag the StaminaBarFill Image to "Stamina Bar Fill"
+
+6. Health System Integration:
+   - The UI script includes methods to update health:
+     - SetHealth(float health)
+     - TakeDamage(float damage)
+     - Heal(float amount)
+   - Call these from your damage/health system
+
+Example usage in damage script:
+```csharp
+// Get reference to UI manager
+CharacterStatusUI statusUI = FindObjectOfType<CharacterStatusUI>();
+
+// When taking damage
+statusUI.TakeDamage(25f);
+
+// When healing
+statusUI.Heal(50f);
+```
+
+The stamina bar automatically updates from the PlayerMovement component!
