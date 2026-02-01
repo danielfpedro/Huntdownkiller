@@ -144,7 +144,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: ff4e291ab2849ac41969a0ddd05b43cb, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -171,4 +171,4 @@ MonoBehaviour:
   timeToExplode: 2
   radius: 4
   baseDamage: 50
-  shootForce: 10
+  shootForce: 12.5

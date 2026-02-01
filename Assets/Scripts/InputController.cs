@@ -39,13 +39,19 @@ public class InputController : MonoBehaviour
 
   void Update()
   {
-    if (weaponsManager?.CurrentWeapon != null)
+    if (weaponsManager != null)
     {
-      // Check if the 'Attack' button is currently held down
-      if (inputActions.Player.Attack.IsPressed())
-      {
-        weaponsManager.CurrentWeapon.AttemptShoot();
-      }
+        // Primary Fire
+        if (weaponsManager.CurrentWeapon != null && inputActions.Player.Shot.IsPressed())
+        {
+            weaponsManager.CurrentWeapon.AttemptShoot();
+        }
+
+        // Secondary Fire
+        if (weaponsManager.CurrentSecondaryWeapon != null && inputActions.Player.ShotSecondary.IsPressed())
+        {
+            weaponsManager.CurrentSecondaryWeapon.AttemptShoot();
+        }
     }
 
     if (playerMovement != null)
