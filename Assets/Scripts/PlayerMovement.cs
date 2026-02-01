@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float crouchSpeed = 2f;
     public float jumpForce = 10f;
     public float gravity = 20f;
-    
+
     [Header("Dash Settings")]
     public float dashSpeed = 15f;
     public float dashDuration = 0.2f;
@@ -17,14 +18,18 @@ public class PlayerMovement : MonoBehaviour
     public float hoverHeight = 1.0f;     // The desired height above ground
     public float rayLength = 1.5f;       // How far down to check for ground
     public LayerMask groundLayer;
-    
+
     [Header("State")]
     public bool isCrouching = false;
     public bool isDashing = false;
 
+    [Header("Colliders")]
+    public Collider2D upperCollider;
+    public Collider2D baseCollider;
+
     private Vector3 velocity;
     private bool isGrounded;
-    
+
     // Dash State
     private float dashTimer;
     private float lastDashTime = -100f;
@@ -48,6 +53,22 @@ public class PlayerMovement : MonoBehaviour
             ApplyGravity();
             HandleGroundCheck();
             ApplyMovement();
+        }
+        HandleColliders();
+    }
+
+    private void HandleColliders()
+    {
+        upperCollider.enabled = true;
+        baseCollider.enabled = true;
+        if (isDashing)
+        {
+            upperCollider.enabled = false;
+            baseCollider.enabled = false;
+        }
+        else if (isCrouching)
+        {
+            upperCollider.enabled = false;
         }
     }
 
@@ -82,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Cooldown check
         if (Time.time < lastDashTime + dashCooldown) return;
-        
+
         // Air dash check
         if (!isGrounded && hasAirDashed) return;
 
@@ -104,6 +125,9 @@ public class PlayerMovement : MonoBehaviour
         // Set dash velocity (horizontal only)
         velocity.x = facingDirection * dashSpeed;
         velocity.y = 0; // Maintain height (classic air dash) or allow gravity? Classic usually suspends gravity.
+
+        // Disable upper collider during dash
+        if (upperCollider != null) upperCollider.enabled = false;
     }
 
     void HandleDash()
@@ -113,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Count down
         dashTimer -= Time.deltaTime;
-        
+
         if (dashTimer <= 0)
         {
             isDashing = false;
@@ -124,6 +148,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetCrouch(bool crouch)
     {
         isCrouching = crouch;
+        if (upperCollider != null)
+        {
+            upperCollider.enabled = !crouch;
+        }
         // Visual feedback could be added here (e.g. shrinking sprite)
     }
 
@@ -132,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
         // Apply gravity if not grounded
         // Note: Even if grounded, we might apply a small gravity to keep checking
         // but since we snap to position, we handle gravity manually in ground check
-        
+
         velocity.y -= gravity * Time.deltaTime;
     }
 
@@ -162,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
         }
-        
+
         isGrounded = false;
     }
 

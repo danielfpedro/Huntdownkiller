@@ -923,10 +923,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
-    - target: {fileID: 5835215839734280741, guid: 712da711b52e6eb44aa77bdd0493d698, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6109697557456311512, guid: 712da711b52e6eb44aa77bdd0493d698, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.62
