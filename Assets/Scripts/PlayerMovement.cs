@@ -63,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         baseCollider.enabled = true;
         if (isDashing)
         {
-            Debug.Log("IM HERE");
             upperCollider.enabled = false;
             baseCollider.enabled = false;
         }
