@@ -63,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         baseCollider.enabled = true;
         if (isDashing)
         {
+            Debug.Log("IM HERE");
             upperCollider.enabled = false;
             baseCollider.enabled = false;
         }
@@ -125,9 +126,6 @@ public class PlayerMovement : MonoBehaviour
         // Set dash velocity (horizontal only)
         velocity.x = facingDirection * dashSpeed;
         velocity.y = 0; // Maintain height (classic air dash) or allow gravity? Classic usually suspends gravity.
-
-        // Disable upper collider during dash
-        if (upperCollider != null) upperCollider.enabled = false;
     }
 
     void HandleDash()
@@ -148,11 +146,6 @@ public class PlayerMovement : MonoBehaviour
     public void SetCrouch(bool crouch)
     {
         isCrouching = crouch;
-        if (upperCollider != null)
-        {
-            upperCollider.enabled = !crouch;
-        }
-        // Visual feedback could be added here (e.g. shrinking sprite)
     }
 
     void ApplyGravity()
