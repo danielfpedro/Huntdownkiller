@@ -644,7 +644,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_24
+      name: Muzzle_00
       rect:
         serializedVersion: 2
         x: 0
@@ -1556,7 +1556,6 @@ TextureImporter:
       Blood_21: -194117749
       Blood_22: 868003733
       Blood_23: 965800118
-      Blood_24: 1052554090
       Blood_25: -846396295
       Blood_26: -145195526
       Blood_27: 48594771
@@ -1603,6 +1602,7 @@ TextureImporter:
       Blood_7: -597335373
       Blood_9: 2095346435
       Ground: 1014601653
+      Muzzle_00: 1052554090
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

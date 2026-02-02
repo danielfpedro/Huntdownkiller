@@ -25,9 +25,11 @@ public class GunController : MonoBehaviour
     [Tooltip("The sprite renderer for the muzzle flash")]
     public SpriteRenderer muzzleRenderer;
     [Tooltip("List of textures for muzzle flash")]
-    public List<Texture2D> muzzleTextures;
+    public List<Sprite> muzzleTextures;
     [Tooltip("Duration the muzzle flash stays enabled")]
     public float muzzleFlashDuration = 0.1f;
+    [Tooltip("The game object for muzzle flash")]
+    public GameObject muzzleFlashObject;
 
     [Header("Pooling System")]
     [Tooltip("Initial number of bullets to pool")]
@@ -60,6 +62,12 @@ public class GunController : MonoBehaviour
         if (muzzleRenderer != null)
         {
             muzzleRenderer.enabled = false;
+        }
+
+        // Disable muzzle flash object on start
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(false);
         }
     }
 
@@ -167,20 +175,34 @@ public class GunController : MonoBehaviour
             muzzleRenderer.enabled = true;
             if (muzzleTextures != null && muzzleTextures.Count > 0)
             {
-                Texture2D randomTexture = muzzleTextures[Random.Range(0, muzzleTextures.Count)];
-                Sprite randomSprite = Sprite.Create(randomTexture, new Rect(0, 0, randomTexture.width, randomTexture.height), new Vector2(0.5f, 0.5f));
-                muzzleRenderer.sprite = randomSprite;
+                Sprite randomTexture = muzzleTextures[Random.Range(0, muzzleTextures.Count)];
+                muzzleRenderer.sprite = randomTexture;
             }
-            StartCoroutine(DisableMuzzleAfter(muzzleFlashDuration));
+        }
+
+        // Activate muzzle flash object
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(true);
+        }
+
+        // Start coroutine to disable after duration
+        if (muzzleRenderer != null || muzzleFlashObject != null)
+        {
+            StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
         }
     }
 
-    IEnumerator DisableMuzzleAfter(float delay)
+    IEnumerator DisableMuzzleFlashAfter(float delay)
     {
         yield return new WaitForSeconds(delay);
         if (muzzleRenderer != null)
         {
             muzzleRenderer.enabled = false;
+        }
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(false);
         }
     }
 }
