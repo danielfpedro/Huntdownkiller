@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 
 public class GunController : MonoBehaviour
 {
@@ -33,8 +32,6 @@ public class GunController : MonoBehaviour
     public GameObject muzzleFlashObject;
 
     [Header("Camera Effects")]
-    [Tooltip("Cinemachine impulse source for camera shake")]
-    public CinemachineImpulseSource impulseSource;
     [Tooltip("Force of the camera impulse")]
     public float impulseForce = 1f;
 
@@ -200,10 +197,7 @@ public class GunController : MonoBehaviour
         }
 
         // Generate camera impulse
-        if (impulseSource != null)
-        {
-            impulseSource.GenerateImpulseWithForce(impulseForce);
-        }
+        ImpulseController.Instance.TriggerShotImpulse(impulseForce);
     }
 
     IEnumerator DisableMuzzleFlashAfter(float delay)

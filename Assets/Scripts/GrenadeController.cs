@@ -40,6 +40,7 @@ public class GrenadeController : Projectile
 
     void Explode()
     {
+        ImpulseController.Instance.TriggerExplosionImpulse(0.5f);
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
         foreach (Collider2D hit in hits)
         {
