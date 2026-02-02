@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 
 public class GunController : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class GunController : MonoBehaviour
     public float muzzleFlashDuration = 0.1f;
     [Tooltip("The game object for muzzle flash")]
     public GameObject muzzleFlashObject;
+
+    [Header("Camera Effects")]
+    [Tooltip("Cinemachine impulse source for camera shake")]
+    public CinemachineImpulseSource impulseSource;
+    [Tooltip("Force of the camera impulse")]
+    public float impulseForce = 1f;
 
     [Header("Pooling System")]
     [Tooltip("Initial number of bullets to pool")]
@@ -190,6 +197,12 @@ public class GunController : MonoBehaviour
         if (muzzleRenderer != null || muzzleFlashObject != null)
         {
             StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
+        }
+
+        // Generate camera impulse
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulseWithForce(impulseForce);
         }
     }
 

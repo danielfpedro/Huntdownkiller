@@ -84,7 +84,7 @@ public class HealthController : MonoBehaviour
         if (damage <= 0) return;
 
         Debug.Log("About to call show indicator: " + damage);
-        HitIndicatorManager.Instance.ShowIndicator(transform.position, damage.ToString());
+        HitIndicatorManager.Instance.ShowIndicator(transform.position * Vector2.right, damage.ToString());
 
         // Play blood particles
         if (bloodParticleSystem != null)
@@ -93,7 +93,7 @@ public class HealthController : MonoBehaviour
             {
                 // Rotate 90 degrees if hit from right (blood sprays up), -90 if from left (down)
                 float rotationAngle = (hitDirection.x < 0) ? -90 : 90f;
-                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 0, rotationAngle);                // Offset X position based on hit direction
+                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 0, rotationAngle); // Offset X position based on hit direction
                 float offset = (hitDirection.x < 0) ? bloodOffsetX : -bloodOffsetX;
                 bloodParticleSystem.transform.localPosition = new Vector3(offset, 0, 0);
             }
