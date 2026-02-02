@@ -9,6 +9,7 @@ public class SightController : MonoBehaviour
     public int resolution = 10; // Number of rays in the cone
     public LayerMask targetLayer;
     public Transform sightOrigin; // The point from which the sight rays originate
+    public PlayerMovement playerMovement; // Reference to the player's movement to get facing direction
 
     [Header("Events")]
     public UnityEvent onTargetDetected;
@@ -25,15 +26,20 @@ public class SightController : MonoBehaviour
     {
         bool targetDetected = false;
 
-        // Calculate the starting angle (leftmost)
+        // Calculate the starting angle (leftmost) of the cone
         float halfAngle = viewAngle / 2f;
-        Vector3 facingDir = sightOrigin.right; // Use sightOrigin's right as forward direction
+        float step = viewAngle / (resolution - 1);
+        
+        // Because we use Rotation in PlayerMovement now, we can simply rely on 
+        // sightOrigin.right to point in the correct forward direction.
+        Vector3 forwardDir = sightOrigin.right;
 
         for (int i = 0; i < resolution; i++)
         {
-            // Calculate the angle for this ray
-            float angle = -halfAngle + (viewAngle / (resolution - 1)) * i;
-            Vector3 rayDir = Quaternion.Euler(0, 0, angle) * facingDir;
+            float angle = -halfAngle + (step * i);
+
+            // Rotate the forward vector by the angle around the Z axis
+            Vector3 rayDir = Quaternion.Euler(0, 0, angle) * forwardDir;
 
             // Cast the ray for detection (only target layer)
             RaycastHit2D hit = Physics2D.Raycast(sightOrigin.position, rayDir, viewDistance, targetLayer);

@@ -1176,14 +1176,14 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.055555556
-    width: 0.33333334
-    height: 0.3333333
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 8.4375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1434,13 +1434,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de25e54e51eb0c1409476b7f50ebd894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  viewDistance: 5
-  viewAngle: 120
+  viewDistance: 7
+  viewAngle: 35
   resolution: 4
   targetLayer:
     serializedVersion: 2
     m_Bits: 0
   sightOrigin: {fileID: 2122139578}
+  playerMovement: {fileID: 0}
   onTargetDetected:
     m_PersistentCalls:
       m_Calls: []

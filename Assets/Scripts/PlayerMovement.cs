@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     // Dash State
     private float dashTimer;
     private float lastDashTime = -100f;
-    private float facingDirection = 1f;
+    public float facingDirection = 1f;
     private bool hasAirDashed = false;
 
     // Stamina State
@@ -51,8 +51,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        // Initialize facing direction based on initial scale
-        facingDirection = Mathf.Sign(transform.localScale.x);
+        // Initialize facing direction.
+        // If we are rotated 180 on Y, we are facing left (-1)
+        if (Mathf.Abs(transform.rotation.eulerAngles.y - 180f) < 1f)
+            facingDirection = -1f;
+        else
+            facingDirection = 1f;
 
         // Initialize stamina
         currentStamina = maxStamina;
@@ -137,7 +141,13 @@ public class PlayerMovement : MonoBehaviour
         if (input.x != 0)
         {
             facingDirection = Mathf.Sign(input.x);
-            transform.localScale = new Vector3(facingDirection, 1, 1);
+            
+            // Rotate the character to face direction instead of flipping scale
+            // This prevents negative scale issues with child objects (like sight cones)
+            if (facingDirection > 0)
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            else
+                transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
@@ -248,7 +258,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
-        transform.Translate(velocity * Time.deltaTime);
+        // Move in World space so that rotation doesn't invert controls
+        transform.Translate(velocity * Time.deltaTime, Space.World);
     }
 
     // Public stamina access methods
