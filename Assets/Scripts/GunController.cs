@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections;
+using System.Collections.Generic;
 
 public class GunController : MonoBehaviour
 {
@@ -18,6 +20,14 @@ public class GunController : MonoBehaviour
     public float yOffset = 0f;
     [Tooltip("Particle system for shell ejection")]
     public ParticleSystem shellParticleSystem;
+
+    [Header("Muzzle Flash")]
+    [Tooltip("The sprite renderer for the muzzle flash")]
+    public SpriteRenderer muzzleRenderer;
+    [Tooltip("List of textures for muzzle flash")]
+    public List<Texture2D> muzzleTextures;
+    [Tooltip("Duration the muzzle flash stays enabled")]
+    public float muzzleFlashDuration = 0.1f;
 
     [Header("Pooling System")]
     [Tooltip("Initial number of bullets to pool")]
@@ -45,6 +55,12 @@ public class GunController : MonoBehaviour
             defaultCapacity: defaultCapacity,
             maxSize: maxPoolSize
         );
+
+        // Disable muzzle renderer on start
+        if (muzzleRenderer != null)
+        {
+            muzzleRenderer.enabled = false;
+        }
     }
 
     public void AttemptShoot()
@@ -143,6 +159,28 @@ public class GunController : MonoBehaviour
         if (shellParticleSystem != null)
         {
             shellParticleSystem.Emit(1);
+        }
+
+        // Enable muzzle flash and set random texture
+        if (muzzleRenderer != null)
+        {
+            muzzleRenderer.enabled = true;
+            if (muzzleTextures != null && muzzleTextures.Count > 0)
+            {
+                Texture2D randomTexture = muzzleTextures[Random.Range(0, muzzleTextures.Count)];
+                Sprite randomSprite = Sprite.Create(randomTexture, new Rect(0, 0, randomTexture.width, randomTexture.height), new Vector2(0.5f, 0.5f));
+                muzzleRenderer.sprite = randomSprite;
+            }
+            StartCoroutine(DisableMuzzleAfter(muzzleFlashDuration));
+        }
+    }
+
+    IEnumerator DisableMuzzleAfter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (muzzleRenderer != null)
+        {
+            muzzleRenderer.enabled = false;
         }
     }
 }

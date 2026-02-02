@@ -8,8 +8,6 @@ public class GrenadeController : Projectile
     public float shootForce = 10f;
     private float timer = 0f;
 
-
-
     void OnEnable()
     {
         timer = 0f;
@@ -27,14 +25,6 @@ public class GrenadeController : Projectile
         if (rb != null)
         {
             rb.AddForce(transform.right * shootForce, ForceMode2D.Impulse);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.GetComponent<HealthController>() != null)
-        {
-            Explode();
         }
     }
 
