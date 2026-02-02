@@ -10,8 +10,12 @@ public class GunController : MonoBehaviour
     public GameObject bulletPrefab;
     [Tooltip("Time between shots in seconds")]
     public float fireRate = 0.2f;
-    [Tooltip("Damage dealt per bullet")]
-    public int damage = 1;
+    [Tooltip("Minimum damage dealt per bullet")]
+    public int minDamage = 1;
+    [Tooltip("Maximum damage dealt per bullet")]
+    public int maxDamage = 3;
+    [Tooltip("Y-axis offset for shot randomness")]
+    public float yOffset = 0f;
     [Tooltip("Particle system for shell ejection")]
     public ParticleSystem shellParticleSystem;
 
@@ -107,8 +111,9 @@ public class GunController : MonoBehaviour
 
         if (bullet != null)
         {
-            // Position the bullet
-            bullet.transform.position = firePoint.position;
+            // Position the bullet with random Y offset
+            float randomYOffset = Random.Range(-yOffset, yOffset);
+            bullet.transform.position = firePoint.position + new Vector3(0f, randomYOffset, 0f);
 
             // Determine direction based on firePoint scale
             float dir = Mathf.Sign(firePoint.lossyScale.x);
@@ -118,6 +123,13 @@ public class GunController : MonoBehaviour
 
             // Combine with firepoint's actual rotation
             bullet.transform.rotation = firePoint.rotation * checkRotation;
+
+            // randomize damage logic if Bullet script is present
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.damage = Random.Range(minDamage, maxDamage + 1);
+            }
 
             // Launch the projectile
             Projectile projectile = bullet.GetComponent<Projectile>();

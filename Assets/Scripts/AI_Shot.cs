@@ -4,6 +4,7 @@ public class AI_Shot : MonoBehaviour
 {
     [Header("AI Shooting Settings")]
     public float shotRate = 1f; // The rate at which the AI attempts to shoot
+    public float startDelay = 0f; // Delay before the first shot
 
     private float nextShotTime = 0f;
     private WeaponsManager weaponsManager;
@@ -11,6 +12,7 @@ public class AI_Shot : MonoBehaviour
     void Start()
     {
         weaponsManager = GetComponentInParent<WeaponsManager>();
+        nextShotTime = Time.time + startDelay;
     }
 
     void Update()

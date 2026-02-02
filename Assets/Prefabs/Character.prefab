@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7832461213984931932}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Weapons - Primary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3703079575847934454}
   - component: {fileID: 39469372645072991}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite Upper(DELETE)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 7504403909810694456}
   - component: {fileID: 1985665622855594326}
   - component: {fileID: 4761667452151971394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Triangle (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 9034751634673684594}
   - component: {fileID: 5356530205479717012}
   - component: {fileID: 883446531243899210}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,9 +479,8 @@ GameObject:
   - component: {fileID: 4098992718134759996}
   - component: {fileID: 933503429529249806}
   - component: {fileID: 4429085750609056248}
-  - component: {fileID: 9190976497572569704}
   - component: {fileID: 3814795185293765025}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,6 +507,7 @@ Transform:
   - {fileID: 3703079575847934454}
   - {fileID: 4965397154987058237}
   - {fileID: 5081200394211698310}
+  - {fileID: 4345804272676741034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2549568084223616111
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68aa34ebb144c7a41a952c6dcf9e21fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 1
+  moveSpeed: 5
   crouchSpeed: 2
   jumpForce: 34
   gravity: 100
@@ -772,19 +772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cc236cd634acb41bc895289bd788d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
---- !u!114 &9190976497572569704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4228127128857040363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52cf2859fada554e853bd157d526184, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  patrolDistance: 2
 --- !u!114 &3814795185293765025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,22 +779,55 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4228127128857040363}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de25e54e51eb0c1409476b7f50ebd894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  viewDistance: 7
+  viewDistance: 20
   viewAngle: 35
   resolution: 4
   targetLayer:
     serializedVersion: 2
     m_Bits: 512
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
   sightOrigin: {fileID: 5081200394211698310}
   playerMovement: {fileID: 0}
-  onTargetDetected:
+  onTargetEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354086976250108882}
+        m_TargetAssemblyTypeName: AI_Shot, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onTargetStay:
     m_PersistentCalls:
       m_Calls: []
+  onTargetExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354086976250108882}
+        m_TargetAssemblyTypeName: AI_Shot, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5783780028770289339
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2744723334483673303}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Weapons - Secondary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9166909512902811210}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GoreContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -875,6 +895,65 @@ Transform:
   - {fileID: 3518599922025869651}
   m_Father: {fileID: 6109697557456311512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6620825568626941174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4345804272676741034}
+  - component: {fileID: 6115472340713017712}
+  - component: {fileID: 1354086976250108882}
+  m_Layer: 0
+  m_Name: Actions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4345804272676741034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620825568626941174}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6109697557456311512}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6115472340713017712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620825568626941174}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52cf2859fada554e853bd157d526184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PatrolController
+  patrolDistance: 4
+--- !u!114 &1354086976250108882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620825568626941174}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b47857a561728e40b5d67764778366d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  shotRate: 1
 --- !u!1 &6670153124064043680
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4965397154987058237}
   - component: {fileID: 4818513411313188658}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite Base (DELETE)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -977,7 +1056,7 @@ GameObject:
   - component: {fileID: 2770556910443381353}
   - component: {fileID: 3665787762298227744}
   - component: {fileID: 33584111951655679}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Triangle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1146,7 +1225,7 @@ GameObject:
   - component: {fileID: 6521714664736623162}
   - component: {fileID: 6965583351709227444}
   - component: {fileID: 6958810654864063385}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1386,6 +1465,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blood
       objectReference: {fileID: 0}
+    - target: {fileID: 1461227877782014118, guid: 92f27a03da01cf84f8a02262f53b4087, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3165032019704084488, guid: 92f27a03da01cf84f8a02262f53b4087, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1409,6 +1496,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7832461213984931932}
     m_Modifications:
+    - target: {fileID: 2861630621831168691, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3161202853059200231, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
       propertyPath: maxPoolSize
       value: 20
@@ -1453,6 +1544,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4707908038492941356, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6791983565398745670, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
       propertyPath: m_Color.b
       value: 0.2742079
@@ -1465,9 +1560,17 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.735849
       objectReference: {fileID: 0}
+    - target: {fileID: 8087823897774351114, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 8501979888243982983, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
       propertyPath: m_Name
       value: Base Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501979888243982983, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8501979888243982983, guid: ed56593751b03a4449b55a75ffb5d04c, type: 3}
       propertyPath: m_IsActive
@@ -1506,6 +1609,10 @@ PrefabInstance:
     - target: {fileID: 1006479335385696896, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.687
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340942285574140236, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2554594254959875482, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1550,6 +1657,10 @@ PrefabInstance:
     - target: {fileID: 2748375228825083071, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: m_Name
       value: Hand Grenade
+      objectReference: {fileID: 0}
+    - target: {fileID: 2748375228825083071, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2748375228825083071, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: m_IsActive
@@ -1602,6 +1713,10 @@ PrefabInstance:
     - target: {fileID: 4897931082107457226, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7608631263740582750, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8325621512371063916, guid: 803334601e395e4439a6a3e4248f3569, type: 3}
       propertyPath: maxPoolSize
