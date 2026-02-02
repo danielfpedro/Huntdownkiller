@@ -35,8 +35,6 @@ public class HealthController : MonoBehaviour
 
     private float flashTimer = 0f;
     private SpriteRenderer spriteRenderer;
-    public SpriteRenderer SpriteRendererUpper;
-    public SpriteRenderer SpriteRendererLower;
     private Color originalColor;
 
     void Start()
@@ -142,17 +140,6 @@ public class HealthController : MonoBehaviour
     public void Die()
     {
         onDeath?.Invoke();
-        SpriteRendererUpper.enabled = false;
-        SpriteRendererLower.enabled = false;
-        
-        // Disable all colliders on this game object
-        Collider2D[] colliders = GetComponents<Collider2D>();
-        foreach (Collider2D col in colliders)
-        {
-            col.enabled = false;
-        }
-
-        Destroy(gameObject, 3f);
     }
 
     public void Revive()

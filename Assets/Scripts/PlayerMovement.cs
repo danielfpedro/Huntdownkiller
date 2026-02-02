@@ -32,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Colliders")]
     public Collider2D upperCollider;
     public Collider2D baseCollider;
-
+    public SpriteRenderer SpriteRendererUpper;
+    public SpriteRenderer SpriteRendererLower;
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -45,18 +46,46 @@ public class PlayerMovement : MonoBehaviour
     // Stamina State
     private float currentStamina;
     private float lastStaminaSpendTime = -100f;
+    HealthController healthController;
+    bool isDead = false;
 
     void Start()
     {
         // Initialize facing direction based on initial scale
         facingDirection = Mathf.Sign(transform.localScale.x);
-        
+
         // Initialize stamina
         currentStamina = maxStamina;
+
+        healthController = GetComponent<HealthController>();
+        healthController.onDeath.AddListener(() =>
+        {
+            isDead = true;
+            upperCollider.enabled = false;
+            baseCollider.enabled = false;
+
+            SpriteRendererUpper.enabled = false;
+            SpriteRendererLower.enabled = false;
+
+            Destroy(GetComponent<HealthController>());
+            Destroy(GetComponent<Animator>());
+
+            // Destroy all children except those containing "Blood"
+            foreach (Transform child in transform)
+            {
+                if (!child.name.Contains("Blood"))
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+
+            Destroy(gameObject, 3f);
+        });
     }
 
     void Update()
     {
+        if (isDead) return;
         if (isDashing)
         {
             HandleDash();
@@ -67,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
             HandleGroundCheck();
             ApplyMovement();
         }
-        
+
         HandleStaminaRegen();
         HandleColliders();
     }
@@ -240,8 +269,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanDash()
     {
-        return currentStamina >= dashStaminaCost && 
-               Time.time >= lastDashTime + dashCooldown && 
+        return currentStamina >= dashStaminaCost &&
+               Time.time >= lastDashTime + dashCooldown &&
                (!(!isGrounded && hasAirDashed));
     }
 }

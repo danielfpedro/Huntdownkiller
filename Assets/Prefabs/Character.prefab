@@ -634,7 +634,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4228127128857040363}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0832fbbe022f2d746b97a3e892d125aa, type: 2}
   m_CullingMode: 0
@@ -681,8 +681,6 @@ MonoBehaviour:
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
-  SpriteRendererUpper: {fileID: 39469372645072991}
-  SpriteRendererLower: {fileID: 4818513411313188658}
 --- !u!114 &7429047184573675682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -715,6 +713,8 @@ MonoBehaviour:
   isDashing: 0
   upperCollider: {fileID: 247530111551323060}
   baseCollider: {fileID: 5770195489533586663}
+  SpriteRendererUpper: {fileID: 39469372645072991}
+  SpriteRendererLower: {fileID: 4818513411313188658}
 --- !u!114 &3886935214188840477
 MonoBehaviour:
   m_ObjectHideFlags: 0
