@@ -12,7 +12,11 @@ public class SightController : MonoBehaviour
     public PlayerMovement playerMovement; // Reference to the player's movement to get facing direction
 
     [Header("Events")]
-    public UnityEvent onTargetDetected;
+    public UnityEvent onTargetEnter;
+    public UnityEvent onTargetStay;
+    public UnityEvent onTargetExit;
+
+    private bool wasTargetDetected = false;
 
     void Update()
     {
@@ -62,7 +66,23 @@ public class SightController : MonoBehaviour
 
         if (targetDetected)
         {
-            onTargetDetected.Invoke();
+            if (!wasTargetDetected)
+            {
+                onTargetEnter.Invoke();
+            }
+            else
+            {
+                onTargetStay.Invoke();
+            }
         }
+        else
+        {
+            if (wasTargetDetected)
+            {
+                onTargetExit.Invoke();
+            }
+        }
+
+        wasTargetDetected = targetDetected;
     }
 }

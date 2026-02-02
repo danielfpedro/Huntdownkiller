@@ -12,7 +12,7 @@ public class PatrolController : MonoBehaviour
     {
         startPosition = transform.position;
         targetX = startPosition.x + direction * patrolDistance;
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = transform.parent.GetComponent<PlayerMovement>();
     }
 
     void Update()
