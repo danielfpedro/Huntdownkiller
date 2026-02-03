@@ -62,7 +62,8 @@ public class GrenadeController : Projectile
                 }
             }
         }
-        GameObject vfx = Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        GameObject vfx = Instantiate(explosionVFX, transform.position * new Vector2(1, 1f), Quaternion.identity);
+        vfx.transform.eulerAngles = new Vector3(-90, 0, 0);
         ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
         ps.Emit(20);
         ReturnToPool();

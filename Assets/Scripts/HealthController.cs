@@ -99,7 +99,7 @@ public class HealthController : MonoBehaviour
             }
             var emission = bloodParticleSystem.emission;
             emission.rateOverTime = bloodEmissionRate;
-            bloodParticleSystem.Emit(20);
+            bloodParticleSystem.Emit(200);
             Invoke("StopBloodParticles", bloodPlayTime);
         }
 
