@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
     public float speed = 20f;
     public float lifeTime = 2f;
     public int damage;
+    public LayerMask returnOnHitLayers;
 
     private float timer;
     private IObjectPool<GameObject> pool;
@@ -41,6 +42,13 @@ public class Bullet : MonoBehaviour
         {
             health.TakeDamage(damage, -transform.right);
             ReturnToPool();
+            return;
+        }
+        // Return to pool if hit health or specific layers
+        if ((returnOnHitLayers.value & (1 << hitInfo.gameObject.layer)) != 0)
+        {
+            ReturnToPool();
+            return;
         }
     }
 

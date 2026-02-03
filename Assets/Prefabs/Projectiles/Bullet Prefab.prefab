@@ -153,3 +153,6 @@ MonoBehaviour:
   speed: 20
   lifeTime: 2
   damage: 1
+  returnOnHitLayers:
+    serializedVersion: 2
+    m_Bits: 64
