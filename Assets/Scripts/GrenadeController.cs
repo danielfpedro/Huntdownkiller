@@ -6,6 +6,7 @@ public class GrenadeController : Projectile
     public float radius = 5f;
     public float baseDamage = 10f;
     public float shootForce = 10f;
+    public GameObject explosionVFX;
     private float timer = 0f;
 
     void OnEnable()
@@ -61,6 +62,9 @@ public class GrenadeController : Projectile
                 }
             }
         }
+        GameObject vfx = Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+        ps.Emit(20);
         ReturnToPool();
     }
 }

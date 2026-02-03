@@ -172,3 +172,4 @@ MonoBehaviour:
   radius: 4
   baseDamage: 50
   shootForce: 12.5
+  explosionVFX: {fileID: 3860937030558558489, guid: 03c7fd127148b1f4687a3c4f67c9fe47, type: 3}
