@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     public float lifeTime = 2f;
     public int damage;
     public LayerMask returnOnHitLayers;
+    public ParticleSystem hitVFX;
 
     private float timer;
     private IObjectPool<GameObject> pool;
@@ -47,6 +48,13 @@ public class Bullet : MonoBehaviour
         // Return to pool if hit health or specific layers
         if ((returnOnHitLayers.value & (1 << hitInfo.gameObject.layer)) != 0)
         {
+            if (hitVFX != null)
+            {
+                Vector2 normal = ((Vector2)transform.position - (Vector2)hitInfo.transform.position).normalized;
+                float angle = Mathf.Atan2(normal.y, normal.x) * Mathf.Rad2Deg;
+                GameObject vfx = Instantiate(hitVFX.gameObject, transform.position, Quaternion.Euler(0, 0, angle));
+                vfx.GetComponent<ParticleSystem>().Emit(100);
+            }
             ReturnToPool();
             return;
         }

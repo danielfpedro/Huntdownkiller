@@ -156,3 +156,4 @@ MonoBehaviour:
   returnOnHitLayers:
     serializedVersion: 2
     m_Bits: 64
+  hitVFX: {fileID: 3344185150314745419, guid: 2e0cca91810ac9f4f900a4fc9eeaccc1, type: 3}
