@@ -1172,7 +1172,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_48
+      name: Door
       rect:
         serializedVersion: 2
         x: 0
@@ -1216,7 +1216,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_50
+      name: Tijolo
       rect:
         serializedVersion: 2
         x: 64
@@ -1238,7 +1238,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_51
+      name: Tijolo_0
       rect:
         serializedVersion: 2
         x: 96
@@ -1260,7 +1260,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_52
+      name: Tijolo_1
       rect:
         serializedVersion: 2
         x: 128
@@ -1348,7 +1348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_56
+      name: Door_01
       rect:
         serializedVersion: 2
         x: 0
@@ -1392,7 +1392,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_58
+      name: T1
       rect:
         serializedVersion: 2
         x: 64
@@ -1414,7 +1414,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_59
+      name: T2
       rect:
         serializedVersion: 2
         x: 96
@@ -1436,7 +1436,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_60
+      name: T3
       rect:
         serializedVersion: 2
         x: 128
@@ -1458,7 +1458,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_61
+      name: Cimento
       rect:
         serializedVersion: 2
         x: 160
@@ -1581,28 +1581,28 @@ TextureImporter:
       Blood_45: 1702913416
       Blood_46: -187217360
       Blood_47: 1320746592
-      Blood_48: -1007880655
       Blood_49: 1040501373
       Blood_5: 587516879
-      Blood_50: -834385996
-      Blood_51: 1037307924
-      Blood_52: -485268940
       Blood_53: 822833276
       Blood_54: -1815240188
       Blood_55: -551988146
-      Blood_56: -420489727
       Blood_57: 914833932
-      Blood_58: -1921775331
-      Blood_59: 1452011438
       Blood_6: 1036647570
-      Blood_60: 1750691560
-      Blood_61: -1244527549
       Blood_62: 1882905923
       Blood_63: 1969808180
       Blood_7: -597335373
       Blood_9: 2095346435
+      Cimento: -1244527549
+      Door: -1007880655
+      Door_01: -420489727
       Ground: 1014601653
       Muzzle_00: 1052554090
+      T1: -1921775331
+      T2: 1452011438
+      T3: 1750691560
+      Tijolo: -834385996
+      Tijolo_0: 1037307924
+      Tijolo_1: -485268940
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

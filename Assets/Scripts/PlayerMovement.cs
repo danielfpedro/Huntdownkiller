@@ -229,8 +229,8 @@ public class PlayerMovement : MonoBehaviour
     void HandleGroundCheck()
     {
         // Simple raycast down
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, groundLayer);
-        Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.up * 0.2f, Vector2.down, rayLength, groundLayer);
+        Debug.DrawRay(transform.position + Vector3.up * 0.2f, Vector2.down * rayLength, Color.red);
 
         // Check if we hit ground and are falling or staying still (not jumping up)
         if (hit.collider != null && velocity.y <= 0)

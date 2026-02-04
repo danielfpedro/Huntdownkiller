@@ -84,7 +84,7 @@ public class HealthController : MonoBehaviour
         if (damage <= 0) return;
 
         Debug.Log("About to call show indicator: " + damage);
-        HitIndicatorManager.Instance.ShowIndicator(transform.position * Vector2.right, damage.ToString());
+        HitIndicatorManager.Instance.ShowIndicator(transform.position * new Vector2(1, 2), damage.ToString());
 
         // Play blood particles
         if (bloodParticleSystem != null)
