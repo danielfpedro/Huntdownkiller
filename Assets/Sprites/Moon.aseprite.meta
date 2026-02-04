@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 763a176352ae490498e55dd2aebff4d8
+guid: 24be417ac397ab045ab3d1f5ab666ac9
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 0
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -93,7 +93,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 0
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639057837066939272
+  platformSettingsDirtyTick: 639058265719093590
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,19 +127,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Hero
+  - name: Moon
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.015873017}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 18
-      height: 56
-    spriteID: e4461a9dce6e612468d174332b9e6f3c
+      x: 4
+      y: 4
+      width: 64
+      height: 63
+    spriteID: 2abb92943a7ff3c43ab3254947dfb676
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -147,61 +147,31 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: Frame_1
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 18
-      y: 0
-      width: 18
-      height: 56
-    spriteID: 9c7776d2780021a4f818a908a7e169b0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 18, y: 0}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 4183277322
+      value0: 1367191803
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Hero
+    name: Moon
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Frame_0
+    - name: Moon
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 7
-        y: 0
-        width: 18
-        height: 56
-      spriteId: e4461a9dce6e612468d174332b9e6f3c
-    - name: Frame_1
-      frameIndex: 1
-      additiveSortOrder: 0
-      cellRect:
-        x: 7
-        y: 0
-        width: 18
-        height: 56
-      spriteId: 9c7776d2780021a4f818a908a7e169b0
+        x: 0
+        y: 1
+        width: 64
+        height: 63
+      spriteId: 2abb92943a7ff3c43ab3254947dfb676
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -247,5 +217,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 64}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 64, y: 64}
+  previousTextureSize: {x: 128, y: 128}

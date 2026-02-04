@@ -93,13 +93,13 @@ public class HealthController : MonoBehaviour
             {
                 // Rotate 90 degrees if hit from right (blood sprays up), -90 if from left (down)
                 float rotationAngle = (hitDirection.x < 0) ? -90 : 90f;
-                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 90, rotationAngle); // Offset X position based on hit direction
+                bloodParticleSystem.transform.rotation = Quaternion.Euler(0, 0, rotationAngle); // Offset X position based on hit direction
                 float offset = (hitDirection.x < 0) ? bloodOffsetX : -bloodOffsetX;
-                bloodParticleSystem.transform.localPosition = new Vector3(offset - 1.0f, 0.6f, 0);
+                bloodParticleSystem.transform.localPosition = new Vector3(offset - 0.7f, 1.4f, 0);
             }
             var emission = bloodParticleSystem.emission;
             emission.rateOverTime = bloodEmissionRate;
-            bloodParticleSystem.Emit(200);
+            bloodParticleSystem.Emit(6);
             Invoke("StopBloodParticles", bloodPlayTime);
         }
 

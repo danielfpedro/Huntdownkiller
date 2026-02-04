@@ -116,7 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Blood_0
+      name: Window0
       rect:
         serializedVersion: 2
         x: 0
@@ -129,7 +129,7 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
       spriteID: 38a83e3b399c2ee40800000000000000
       internalID: 5684327315910396547
@@ -151,7 +151,7 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
       spriteID: c2ea98633889e7fe0800000000000000
       internalID: -1189345562256101844
@@ -292,7 +292,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground
+      name: Sidewalk
       rect:
         serializedVersion: 2
         x: 0
@@ -304,7 +304,11 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: 16, y: 10}
+        - {x: -16, y: 10}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
       tessellationDetail: 0
       bones: []
       spriteID: 3883ef191078e4d46b7063cadcaea8a0
@@ -314,7 +318,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_9
+      name: Street
       rect:
         serializedVersion: 2
         x: 32
@@ -358,7 +362,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_11
+      name: Window
       rect:
         serializedVersion: 2
         x: 96
@@ -380,7 +384,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_12
+      name: Window1
       rect:
         serializedVersion: 2
         x: 128
@@ -402,7 +406,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_13
+      name: House Number
       rect:
         serializedVersion: 2
         x: 160
@@ -424,7 +428,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_14
+      name: Lajota1
       rect:
         serializedVersion: 2
         x: 192
@@ -446,7 +450,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_15
+      name: Lajota2
       rect:
         serializedVersion: 2
         x: 224
@@ -534,7 +538,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_19
+      name: Window2
       rect:
         serializedVersion: 2
         x: 96
@@ -556,7 +560,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_20
+      name: Window3
       rect:
         serializedVersion: 2
         x: 128
@@ -600,7 +604,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_22
+      name: Lajota3
       rect:
         serializedVersion: 2
         x: 192
@@ -622,7 +626,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blood_23
+      name: Lajota4
       rect:
         serializedVersion: 2
         x: 224
@@ -1539,23 +1543,13 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
-      Blood_0: 5684327315910396547
       Blood_1: -1189345562256101844
       Blood_10: -292088971
-      Blood_11: 1473594732
-      Blood_12: 2082547881
-      Blood_13: -1753865028
-      Blood_14: -1261316653
-      Blood_15: -67421959
       Blood_16: 1468494220
       Blood_17: 901051708
       Blood_18: 1482503066
-      Blood_19: 2663399
       Blood_2: -1526491864
-      Blood_20: 1770974047
       Blood_21: -194117749
-      Blood_22: 868003733
-      Blood_23: 965800118
       Blood_25: -846396295
       Blood_26: -145195526
       Blood_27: 48594771
@@ -1591,18 +1585,28 @@ TextureImporter:
       Blood_62: 1882905923
       Blood_63: 1969808180
       Blood_7: -597335373
-      Blood_9: 2095346435
       Cimento: -1244527549
       Door: -1007880655
       Door_01: -420489727
-      Ground: 1014601653
+      House Number: -1753865028
+      Lajota1: -1261316653
+      Lajota2: -67421959
+      Lajota3: 868003733
+      Lajota4: 965800118
       Muzzle_00: 1052554090
+      Sidewalk: 1014601653
+      Street: 2095346435
       T1: -1921775331
       T2: 1452011438
       T3: 1750691560
       Tijolo: -834385996
       Tijolo_0: 1037307924
       Tijolo_1: -485268940
+      Window: 1473594732
+      Window0: 5684327315910396547
+      Window1: 2082547881
+      Window2: 2663399
+      Window3: 1770974047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

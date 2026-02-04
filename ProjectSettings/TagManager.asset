@@ -44,8 +44,17 @@ TagManager:
   - name: Scenario
     uniqueID: 2903160377
     locked: 0
+  - name: Over Scenario
+    uniqueID: 2522668265
+    locked: 0
   - name: Characters
     uniqueID: 2228979087
+    locked: 0
+  - name: Weapon
+    uniqueID: 3098736937
+    locked: 0
+  - name: VFX
+    uniqueID: 836660199
     locked: 0
   m_RenderingLayers:
   - Default
