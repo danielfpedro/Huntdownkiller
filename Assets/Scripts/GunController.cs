@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class GunController : MonoBehaviour
 {
@@ -22,18 +23,20 @@ public class GunController : MonoBehaviour
     public ParticleSystem shellParticleSystem;
 
     [Header("Muzzle Flash")]
-    [Tooltip("The sprite renderer for the muzzle flash")]
-    public SpriteRenderer muzzleRenderer;
-    [Tooltip("List of textures for muzzle flash")]
-    public List<Sprite> muzzleTextures;
+    [Tooltip("The game object for muzzle flash light")]
+    public GameObject muzzleFlashObject;
     [Tooltip("Duration the muzzle flash stays enabled")]
     public float muzzleFlashDuration = 0.1f;
-    [Tooltip("The game object for muzzle flash")]
-    public GameObject muzzleFlashObject;
 
     [Header("Camera Effects")]
     [Tooltip("Force of the camera impulse")]
     public float impulseForce = 1f;
+
+    [Header("Events")]
+    public UnityEvent onShot;
+
+    [Header("Animation")]
+    // Removed direct reference to GunAnimatorController
 
     [Header("Pooling System")]
     [Tooltip("Initial number of bullets to pool")]
@@ -61,12 +64,6 @@ public class GunController : MonoBehaviour
             defaultCapacity: defaultCapacity,
             maxSize: maxPoolSize
         );
-
-        // Disable muzzle renderer on start
-        if (muzzleRenderer != null)
-        {
-            muzzleRenderer.enabled = false;
-        }
 
         // Disable muzzle flash object on start
         if (muzzleFlashObject != null)
@@ -173,17 +170,6 @@ public class GunController : MonoBehaviour
             shellParticleSystem.Emit(1);
         }
 
-        // Enable muzzle flash and set random texture
-        if (muzzleRenderer != null)
-        {
-            muzzleRenderer.enabled = true;
-            if (muzzleTextures != null && muzzleTextures.Count > 0)
-            {
-                Sprite randomTexture = muzzleTextures[Random.Range(0, muzzleTextures.Count)];
-                muzzleRenderer.sprite = randomTexture;
-            }
-        }
-
         // Activate muzzle flash object
         if (muzzleFlashObject != null)
         {
@@ -191,22 +177,21 @@ public class GunController : MonoBehaviour
         }
 
         // Start coroutine to disable after duration
-        if (muzzleRenderer != null || muzzleFlashObject != null)
+        if (muzzleFlashObject != null)
         {
             StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
         }
 
         // Generate camera impulse
         ImpulseController.Instance.TriggerShotImpulse(impulseForce);
+
+        // Invoke the shot event
+        onShot?.Invoke();
     }
 
     IEnumerator DisableMuzzleFlashAfter(float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (muzzleRenderer != null)
-        {
-            muzzleRenderer.enabled = false;
-        }
         if (muzzleFlashObject != null)
         {
             muzzleFlashObject.SetActive(false);
