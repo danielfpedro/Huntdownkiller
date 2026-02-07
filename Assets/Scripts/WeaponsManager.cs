@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WeaponsManager : MonoBehaviour
 {
     public Transform primaryWeaponsContainer;
     public Transform secondaryWeaponsContainer;
+
+    public UnityEvent onWeaponChanged;
 
     private int currentWeaponIndex = 0;
     private int currentSecondaryWeaponIndex = 0;
@@ -19,6 +22,16 @@ public class WeaponsManager : MonoBehaviour
     public GunController CurrentSecondaryWeapon
     {
         get { return currentSecondaryGunController; }
+    }
+
+    public int GetCurrentWeaponIndex()
+    {
+        return currentWeaponIndex;
+    }
+
+    public int GetCurrentSecondaryWeaponIndex()
+    {
+        return currentSecondaryWeaponIndex;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,6 +79,7 @@ public class WeaponsManager : MonoBehaviour
         primaryWeaponsContainer.GetChild(prevIndex).gameObject.SetActive(false);
         primaryWeaponsContainer.GetChild(currentWeaponIndex).gameObject.SetActive(true);
         currentGunController = primaryWeaponsContainer.GetChild(currentWeaponIndex).GetComponent<GunController>();
+        onWeaponChanged?.Invoke();
     }
 
     public void NextSecondary()
@@ -77,5 +91,6 @@ public class WeaponsManager : MonoBehaviour
         secondaryWeaponsContainer.GetChild(prevIndex).gameObject.SetActive(false);
         secondaryWeaponsContainer.GetChild(currentSecondaryWeaponIndex).gameObject.SetActive(true);
         currentSecondaryGunController = secondaryWeaponsContainer.GetChild(currentSecondaryWeaponIndex).GetComponent<GunController>();
+        onWeaponChanged?.Invoke();
     }
 }

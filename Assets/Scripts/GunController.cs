@@ -103,6 +103,9 @@ public class GunController : MonoBehaviour
     // Properties
     public int CurrentAmmo => currentAmmo;
     public int TotalAmmo => totalAmmo;
+    [Header("UI Settings")]
+    [Tooltip("The sprite used for UI representation of this gun.")]
+    public Sprite icon; // For UI representation
 
     private void Awake()
     {
@@ -292,7 +295,7 @@ public class GunController : MonoBehaviour
         if (muzzleFlashObject != null)
         {
             muzzleFlashObject.SetActive(true);
-            
+
             // Restart the disable timer
             if (muzzleFlashCoroutine != null) StopCoroutine(muzzleFlashCoroutine);
             muzzleFlashCoroutine = StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
@@ -317,7 +320,7 @@ public class GunController : MonoBehaviour
     {
         isReloading = true;
         onReloadStart?.Invoke();
-        
+
         // Schedule magazine drop effect
         if (oldMagazineVFX != null)
         {
