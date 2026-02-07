@@ -31,6 +31,7 @@ public class InputController : MonoBehaviour
     inputActions.Player.Shot.canceled += OnPrimaryFireCanceled;
     inputActions.Player.ShotSecondary.started += OnSecondaryFireStarted;
     inputActions.Player.ShotSecondary.canceled += OnSecondaryFireCanceled;
+    inputActions.Player.Reload.performed += OnReload;
   }
 
   void OnDisable()
@@ -42,6 +43,7 @@ public class InputController : MonoBehaviour
     inputActions.Player.Shot.canceled -= OnPrimaryFireCanceled;
     inputActions.Player.ShotSecondary.started -= OnSecondaryFireStarted;
     inputActions.Player.ShotSecondary.canceled -= OnSecondaryFireCanceled;
+    inputActions.Player.Reload.performed -= OnReload;
     inputActions.Disable();
   }
 
@@ -109,6 +111,18 @@ public class InputController : MonoBehaviour
     if (weaponsManager?.CurrentSecondaryWeapon != null)
     {
       weaponsManager.CurrentSecondaryWeapon.StopFiring();
+    }
+  }
+
+  private void OnReload(InputAction.CallbackContext context)
+  {
+    if (weaponsManager?.CurrentWeapon != null)
+    {
+      weaponsManager.CurrentWeapon.Reload();
+    }
+    if (weaponsManager?.CurrentSecondaryWeapon != null)
+    {
+      weaponsManager.CurrentSecondaryWeapon.Reload();
     }
   }
 }

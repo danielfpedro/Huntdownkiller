@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class GunController : MonoBehaviour
 {
     public enum FireMode
@@ -28,7 +30,13 @@ public class GunController : MonoBehaviour
     [Tooltip("Particle system for shell ejection")]
     public ParticleSystem shellParticleSystem;
     [Tooltip("Fire mode: Manual for single shots, Automatic for continuous fire")]
-    public FireMode fireMode = FireMode.Manual;
+    public FireMode fireMode = FireMode.Automatic;
+    [Tooltip("Size of the magazine")]
+    public int magazineSize = 10;
+    [Tooltip("Total ammo available")]
+    public int totalAmmo = 100;
+    [Tooltip("Automatically reload when trying to shoot with an empty magazine")]
+    public bool autoReload = true;
 
     [Header("Muzzle Flash")]
     [Tooltip("The game object for muzzle flash light")]
@@ -42,6 +50,7 @@ public class GunController : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent onShot;
+    public UnityEvent onReloadStart;
 
     [Header("Animation")]
     // Removed direct reference to GunAnimatorController
@@ -55,6 +64,7 @@ public class GunController : MonoBehaviour
     private ObjectPool<GameObject> pool;
     private float nextFireTime = 0f;
     private bool isFiring = false;
+    private int currentAmmo;
 
     void Awake()
     {
@@ -79,6 +89,14 @@ public class GunController : MonoBehaviour
         {
             muzzleFlashObject.SetActive(false);
         }
+
+        // Initialize ammo
+        currentAmmo = magazineSize;
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Total: {totalAmmo} | Mode: {fireMode} | Firing: {isFiring}");
     }
 
     void Update()
@@ -91,20 +109,47 @@ public class GunController : MonoBehaviour
 
     public void StartFiring()
     {
+        Debug.Log("StartFiring called");
         isFiring = true;
-        if (fireMode == FireMode.Manual)
-        {
-            AttemptShoot();
-        }
+        AttemptShoot();
     }
 
     public void StopFiring()
     {
+        Debug.Log("StopFiring called");
         isFiring = false;
     }
 
+    public void Reload()
+    {
+        if (totalAmmo > 0)
+        {
+            onReloadStart?.Invoke();
+
+            int needed = magazineSize - currentAmmo;
+            int reloadAmount = Mathf.Min(needed, totalAmmo);
+            currentAmmo += reloadAmount;
+            totalAmmo -= reloadAmount;
+        }
+    }
+
+    public int CurrentAmmo => currentAmmo;
+    public int TotalAmmo => totalAmmo;
+
     public void AttemptShoot()
     {
+        // Auto-reload if empty and enabled
+        if (currentAmmo <= 0 && autoReload && totalAmmo > 0)
+        {
+            Reload();
+        }
+
+        // Check if we have ammo
+        if (currentAmmo <= 0)
+        {
+            return;
+        }
+
         // Checks if enough time has passed since the last shot
         if (Time.time >= nextFireTime)
         {
@@ -218,6 +263,9 @@ public class GunController : MonoBehaviour
 
         // Invoke the shot event
         onShot?.Invoke();
+
+        // Decrease ammo
+        currentAmmo--;
     }
 
     IEnumerator DisableMuzzleFlashAfter(float delay)

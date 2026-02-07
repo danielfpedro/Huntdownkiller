@@ -12,6 +12,7 @@ public class GunAnimatorController : MonoBehaviour
         if (gunController != null)
         {
             gunController.onShot.AddListener(() => SetTrigger("Shot"));
+            gunController.onReloadStart.AddListener(() => SetTrigger("Reload"));
         }
     }
 
