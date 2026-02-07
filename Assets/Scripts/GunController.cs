@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Animator))]
+// [RequireComponent(typeof(Animator))] // Animator replaced by custom Animation handling in GunAnimatorController
 [RequireComponent(typeof(SpriteRenderer))]
 public class GunController : MonoBehaviour
 {

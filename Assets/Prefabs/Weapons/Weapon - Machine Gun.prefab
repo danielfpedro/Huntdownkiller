@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6651881652384117578
 Transform:
   m_ObjectHideFlags: 0
@@ -252,10 +252,20 @@ MonoBehaviour:
   maxDamage: 3
   yOffset: 0
   shellParticleSystem: {fileID: 7303146946793255609}
+  oldMagazineVFX: {fileID: 0}
+  oldMagazineDelay: 0.5
+  fireMode: 1
+  magazineSize: 20
+  totalAmmo: 20
+  reloadDuration: 1
+  autoReload: 1
   muzzleFlashObject: {fileID: 4748472130852130537}
   muzzleFlashDuration: 0.1
   impulseForce: 0.1
   onShot:
+    m_PersistentCalls:
+      m_Calls: []
+  onReloadStart:
     m_PersistentCalls:
       m_Calls: []
   defaultCapacity: 20
@@ -272,6 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0efafcdf9311604f90fb706cb47edee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  idleClip: {fileID: 0}
+  shotClip: {fileID: 0}
+  reloadClip: {fileID: 0}
 --- !u!1001 &8798217967871472141
 PrefabInstance:
   m_ObjectHideFlags: 0
