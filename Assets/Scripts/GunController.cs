@@ -29,12 +29,18 @@ public class GunController : MonoBehaviour
     public float yOffset = 0f;
     [Tooltip("Particle system for shell ejection")]
     public ParticleSystem shellParticleSystem;
+    [Tooltip("Particle system for old magazine ejection")]
+    public ParticleSystem oldMagazineVFX;
+    [Tooltip("Delay before emitting the old magazine during reload")]
+    public float oldMagazineDelay = 0.5f;
     [Tooltip("Fire mode: Manual for single shots, Automatic for continuous fire")]
     public FireMode fireMode = FireMode.Automatic;
     [Tooltip("Size of the magazine")]
     public int magazineSize = 10;
     [Tooltip("Total ammo available")]
     public int totalAmmo = 100;
+    [Tooltip("Time it takes to reload")]
+    public float reloadDuration = 1.0f;
     [Tooltip("Automatically reload when trying to shoot with an empty magazine")]
     public bool autoReload = true;
 
@@ -64,6 +70,7 @@ public class GunController : MonoBehaviour
     private ObjectPool<GameObject> pool;
     private float nextFireTime = 0f;
     private bool isFiring = false;
+    private bool isReloading = false;
     private int currentAmmo;
 
     void Awake()
@@ -96,7 +103,7 @@ public class GunController : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Total: {totalAmmo} | Mode: {fireMode} | Firing: {isFiring}");
+        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Total: {totalAmmo} | Mode: {fireMode} | Firing: {isFiring} | Reloading: {isReloading}");
     }
 
     void Update()
@@ -122,15 +129,38 @@ public class GunController : MonoBehaviour
 
     public void Reload()
     {
-        if (totalAmmo > 0)
+        if (isReloading || totalAmmo <= 0 || currentAmmo >= magazineSize)
         {
-            onReloadStart?.Invoke();
-
-            int needed = magazineSize - currentAmmo;
-            int reloadAmount = Mathf.Min(needed, totalAmmo);
-            currentAmmo += reloadAmount;
-            totalAmmo -= reloadAmount;
+            return;
         }
+
+        StartCoroutine(ReloadCoroutine());
+    }
+
+    IEnumerator ReloadCoroutine()
+    {
+        isReloading = true;
+        onReloadStart?.Invoke();
+        
+        // Start old mag effect concurrently if needed
+        StartCoroutine(EmitMagazineAfterDelay(oldMagazineDelay));
+
+        // Wait for reload duration
+        yield return new WaitForSeconds(reloadDuration);
+
+        // Perform ammo refill logic
+        int needed = magazineSize - currentAmmo;
+        int reloadAmount = Mathf.Min(needed, totalAmmo);
+        currentAmmo += reloadAmount;
+        totalAmmo -= reloadAmount;
+
+        isReloading = false;
+    }
+
+    IEnumerator EmitMagazineAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        EmitOldMagazine();
     }
 
     public int CurrentAmmo => currentAmmo;
@@ -138,10 +168,16 @@ public class GunController : MonoBehaviour
 
     public void AttemptShoot()
     {
+        if (isReloading)
+        {
+            return;
+        }
+
         // Auto-reload if empty and enabled
         if (currentAmmo <= 0 && autoReload && totalAmmo > 0)
         {
             Reload();
+            return; // Return so we don't shoot while reloading
         }
 
         // Check if we have ammo
@@ -274,6 +310,14 @@ public class GunController : MonoBehaviour
         if (muzzleFlashObject != null)
         {
             muzzleFlashObject.SetActive(false);
+        }
+    }
+
+    public void EmitOldMagazine()
+    {
+        if (oldMagazineVFX != null)
+        {
+            oldMagazineVFX.Emit(1);
         }
     }
 }
