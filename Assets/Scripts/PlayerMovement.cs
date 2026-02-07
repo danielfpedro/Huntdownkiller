@@ -41,8 +41,12 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Container object for holding weapons, moved during crouch")]
     public GameObject weaponsContainer;
     [Tooltip("Local position offset applied to weapons when crouching")]
-    public Vector2 weaponCrouchOffset;
+    public Vector2 weaponCrouchOffset = new Vector2(0f, -0.2f);
+    [Tooltip("Smoothing time for weapon position changes")]
+    public float weaponSmoothing = 0.1f;
     private Vector3 initialWeaponLocalPos;
+    private Vector3 targetWeaponLocalPos;
+    private Vector3 weaponVelocity;
 
     // Dash State
     private float dashTimer;
@@ -116,6 +120,21 @@ public class PlayerMovement : MonoBehaviour
 
         HandleStaminaRegen();
         HandleColliders();
+        HandleWeaponPosition(); // Moved to LateUpdate
+    }
+
+    private void HandleWeaponPosition()
+    {
+        if (weaponsContainer == null) return;
+
+        targetWeaponLocalPos = isCrouching ? initialWeaponLocalPos + (Vector3)weaponCrouchOffset : initialWeaponLocalPos;
+
+        weaponsContainer.transform.localPosition = Vector3.SmoothDamp(
+            weaponsContainer.transform.localPosition,
+            targetWeaponLocalPos,
+            ref weaponVelocity,
+            weaponSmoothing
+        );
     }
 
     private void HandleColliders()
@@ -154,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
         if (input.x != 0)
         {
             facingDirection = Mathf.Sign(input.x);
-            
+
             // Rotate the character to face direction instead of flipping scale
             // This prevents negative scale issues with child objects (like sight cones)
             if (facingDirection > 0)
@@ -230,18 +249,6 @@ public class PlayerMovement : MonoBehaviour
         if (isCrouching == crouch) return;
 
         isCrouching = crouch;
-
-        if (weaponsContainer != null)
-        {
-            if (isCrouching)
-            {
-                weaponsContainer.transform.localPosition = initialWeaponLocalPos + (Vector3)weaponCrouchOffset;
-            }
-            else
-            {
-                weaponsContainer.transform.localPosition = initialWeaponLocalPos;
-            }
-        }
     }
 
     void ApplyGravity()

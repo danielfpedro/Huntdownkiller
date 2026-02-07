@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerMovement))]
 public class CharacterAnimatorController : MonoBehaviour
 {
@@ -16,8 +15,9 @@ public class CharacterAnimatorController : MonoBehaviour
     #endregion
 
     // Dependencies
+    [Header("References")]
+    public Animator animator;
     private PlayerMovement playerMovement;
-    private Animator animator;
 
     // Playables API
     private PlayableGraph graph;
@@ -25,7 +25,11 @@ public class CharacterAnimatorController : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+             animator = GetComponent<Animator>();
+        }
+        
         playerMovement = GetComponent<PlayerMovement>();
 
         InitializeGraph();

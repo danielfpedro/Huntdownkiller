@@ -7497,7 +7497,8 @@ MonoBehaviour:
   SpriteRendererUpper: {fileID: 1400421462047126869}
   SpriteRendererLower: {fileID: 5854044694046419512}
   weaponsContainer: {fileID: 1825994351936452351}
-  weaponCrouchOffset: {x: 0, y: -0.25}
+  weaponCrouchOffset: {x: 0, y: 1}
+  weaponSmoothing: 10
   facingDirection: 1
 --- !u!4 &8628319159283260739
 Transform:
