@@ -3811,7 +3811,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 40
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -8988,6 +8988,14 @@ PrefabInstance:
       propertyPath: icon
       value: 
       objectReference: {fileID: 1266319063123516175, guid: e2d461b15893add4685e6fde2333802f, type: 3}
+    - target: {fileID: 2155876845908551038, guid: e353a38ac98a5804aa2e0c3fe7fcf993, type: 3}
+      propertyPath: magazineSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155876845908551038, guid: e353a38ac98a5804aa2e0c3fe7fcf993, type: 3}
+      propertyPath: totalMagazines
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6011394285932699415, guid: e353a38ac98a5804aa2e0c3fe7fcf993, type: 3}
       propertyPath: m_Name
       value: Machine Gun
