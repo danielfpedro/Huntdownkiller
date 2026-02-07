@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.Events;
 
-// [RequireComponent(typeof(Animator))] // Animator replaced by custom Animation handling in GunAnimatorController
 [RequireComponent(typeof(SpriteRenderer))]
 public class GunController : MonoBehaviour
 {
@@ -14,74 +12,118 @@ public class GunController : MonoBehaviour
         Automatic
     }
 
-    [Header("Gun Settings")]
-    [Tooltip("The position where the bullet is spawned")]
+    #region Gun Settings
+    [Header("Gun Configuration")]
+    [Tooltip("The transform position where the bullet will be instantiated.")]
     public Transform firePoint;
-    [Tooltip("The Bullet Prefab to shoot")]
-    public GameObject bulletPrefab;
-    [Tooltip("Time between shots in seconds")]
-    public float fireRate = 0.2f;
-    [Tooltip("Minimum damage dealt per bullet")]
-    public int minDamage = 1;
-    [Tooltip("Maximum damage dealt per bullet")]
-    public int maxDamage = 3;
-    [Tooltip("Y-axis offset for shot randomness")]
-    public float yOffset = 0f;
-    [Tooltip("Particle system for shell ejection")]
-    public ParticleSystem shellParticleSystem;
-    [Tooltip("Particle system for old magazine ejection")]
-    public ParticleSystem oldMagazineVFX;
-    [Tooltip("Delay before emitting the old magazine during reload")]
-    public float oldMagazineDelay = 0.5f;
-    [Tooltip("Fire mode: Manual for single shots, Automatic for continuous fire")]
-    public FireMode fireMode = FireMode.Automatic;
-    [Tooltip("Size of the magazine")]
-    public int magazineSize = 10;
-    [Tooltip("Total ammo available")]
-    public int totalAmmo = 100;
-    [Tooltip("Time it takes to reload")]
-    public float reloadDuration = 1.0f;
-    [Tooltip("Automatically reload when trying to shoot with an empty magazine")]
-    public bool autoReload = true;
 
+    [Tooltip("The prefab of the bullet to be shot.")]
+    public GameObject bulletPrefab;
+
+    [Tooltip("Determines the firing behavior: Manual (single shot) or Automatic (continuous).")]
+    public FireMode fireMode = FireMode.Automatic;
+
+    [Tooltip("The time interval in seconds between shots.")]
+    public float fireRate = 0.2f;
+
+    [Header("Damage Stats")]
+    [Tooltip("The minimum damage a single bullet can inflict.")]
+    public int minDamage = 1;
+
+    [Tooltip("The maximum damage a single bullet can inflict.")]
+    public int maxDamage = 3;
+
+    [Header("Accuracy")]
+    [Tooltip("Random vertical offset applied to the bullet spawn position for shot variation.")]
+    public float yOffset = 0f;
+
+    [Header("Ammo Configuration")]
+    [Tooltip("The maximum number of bullets a single magazine can hold.")]
+    public int magazineSize = 10;
+
+    [Tooltip("The total amount of ammo available in reserve.")]
+    public int totalAmmo = 100;
+
+    [Tooltip("The time in seconds it takes to complete a reload.")]
+    public float reloadDuration = 1.0f;
+
+    [Tooltip("If enabled, the gun auto-reloads when firing with an empty magazine.")]
+    public bool autoReload = true;
+    #endregion
+
+    #region Visual Effects
     [Header("Muzzle Flash")]
-    [Tooltip("The game object for muzzle flash light")]
+    [Tooltip("The GameObject representing the muzzle flash effect.")]
     public GameObject muzzleFlashObject;
-    [Tooltip("Duration the muzzle flash stays enabled")]
+
+    [Tooltip("How long the muzzle flash remains visible after a shot.")]
     public float muzzleFlashDuration = 0.1f;
 
+    [Header("Particle Systems")]
+    [Tooltip("Particle system played when a shell casing is ejected.")]
+    public ParticleSystem shellParticleSystem;
+
+    [Tooltip("Particle system played when the old magazine is ejected during reload.")]
+    public ParticleSystem oldMagazineVFX;
+
+    [Tooltip("Delay in seconds before the old magazine particle is emitted during reload.")]
+    public float oldMagazineDelay = 0.5f;
+
     [Header("Camera Effects")]
-    [Tooltip("Force of the camera impulse")]
+    [Tooltip("The force intensity of the camera shake/impulse when shooting.")]
     public float impulseForce = 1f;
+    #endregion
 
+    #region Events
     [Header("Events")]
+    [Tooltip("Event invoked whenever a shot is successfully fired.")]
     public UnityEvent onShot;
+
+    [Tooltip("Event invoked when the reload sequence begins.")]
     public UnityEvent onReloadStart;
+    #endregion
 
-    [Header("Animation")]
-    // Removed direct reference to GunAnimatorController
-
+    #region Pooling Setup
     [Header("Pooling System")]
-    [Tooltip("Initial number of bullets to pool")]
+    [Tooltip("The initial number of items to create in the pool.")]
     public int defaultCapacity = 20;
-    public int maxPoolSize = 100;
 
-    // Unity ObjectPool
+    [Tooltip("The maximum number of items the pool can hold.")]
+    public int maxPoolSize = 100;
+    #endregion
+
+    // Logic Variables
     private ObjectPool<GameObject> pool;
     private float nextFireTime = 0f;
     private bool isFiring = false;
     private bool isReloading = false;
     private int currentAmmo;
+    private Coroutine muzzleFlashCoroutine;
 
-    void Awake()
+    // Properties
+    public int CurrentAmmo => currentAmmo;
+    public int TotalAmmo => totalAmmo;
+
+    private void Awake()
     {
-        // If no firePoint assigned, use the gun's own transform
+        // Fallback if firePoint is not set
         if (firePoint == null)
         {
             firePoint = transform;
         }
 
-        // Initialize the pool
+        InitializePool();
+
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(false);
+        }
+
+        currentAmmo = magazineSize;
+    }
+
+    private void InitializePool()
+    {
         pool = new ObjectPool<GameObject>(
             createFunc: CreateBullet,
             actionOnGet: OnTakeFromPool,
@@ -90,23 +132,15 @@ public class GunController : MonoBehaviour
             defaultCapacity: defaultCapacity,
             maxSize: maxPoolSize
         );
-
-        // Disable muzzle flash object on start
-        if (muzzleFlashObject != null)
-        {
-            muzzleFlashObject.SetActive(false);
-        }
-
-        // Initialize ammo
-        currentAmmo = magazineSize;
     }
 
-    void OnGUI()
+    // Debug GUI to track ammo and states
+    private void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Total: {totalAmmo} | Mode: {fireMode} | Firing: {isFiring} | Reloading: {isReloading}");
     }
 
-    void Update()
+    private void Update()
     {
         if (isFiring && fireMode == FireMode.Automatic)
         {
@@ -114,19 +148,28 @@ public class GunController : MonoBehaviour
         }
     }
 
+    #region Public API
+
+    /// <summary>
+    /// Starts the firing sequence. Used by input handlers.
+    /// </summary>
     public void StartFiring()
     {
-        Debug.Log("StartFiring called");
         isFiring = true;
         AttemptShoot();
     }
 
+    /// <summary>
+    /// Stops the firing sequence.
+    /// </summary>
     public void StopFiring()
     {
-        Debug.Log("StopFiring called");
         isFiring = false;
     }
 
+    /// <summary>
+    /// Initiates the reload process if conditions are met.
+    /// </summary>
     public void Reload()
     {
         if (isReloading || totalAmmo <= 0 || currentAmmo >= magazineSize)
@@ -134,21 +177,156 @@ public class GunController : MonoBehaviour
             return;
         }
 
-        StartCoroutine(ReloadCoroutine());
+        StartCoroutine(ReloadRoutine());
     }
 
-    IEnumerator ReloadCoroutine()
+    /// <summary>
+    /// Manually emit the empty magazine effect (e.g. from animation event).
+    /// </summary>
+    public void EmitOldMagazine()
+    {
+        if (oldMagazineVFX != null)
+        {
+            oldMagazineVFX.Emit(1);
+        }
+    }
+
+    #endregion
+
+    #region Shooting Logic
+
+    public void AttemptShoot()
+    {
+        if (isReloading) return;
+
+        // Handle auto-reload
+        if (currentAmmo <= 0)
+        {
+            if (autoReload && totalAmmo > 0)
+            {
+                Reload();
+            }
+            return;
+        }
+
+        // Fire rate check
+        if (Time.time >= nextFireTime)
+        {
+            PerformShoot();
+            nextFireTime = Time.time + fireRate;
+        }
+    }
+
+    private void PerformShoot()
+    {
+        if (!ValidateComponents()) return;
+
+        GameObject bullet = pool.Get();
+        if (bullet != null)
+        {
+            SetupBullet(bullet);
+        }
+
+        PlayShootEffects();
+
+        // Apply Camera Impulse
+        if (ImpulseController.Instance != null)
+        {
+            ImpulseController.Instance.TriggerShotImpulse(impulseForce);
+        }
+
+        onShot?.Invoke();
+        currentAmmo--;
+    }
+
+    private bool ValidateComponents()
+    {
+        if (firePoint == null)
+        {
+            Debug.LogError("FirePoint is not assigned in GunController!");
+            return false;
+        }
+        if (pool == null)
+        {
+            Debug.LogError("Pool is not initialized in GunController!");
+            return false;
+        }
+        return true;
+    }
+
+    private void SetupBullet(GameObject bullet)
+    {
+        // 1. Set Position
+        float randomYOffset = Random.Range(-yOffset, yOffset);
+        bullet.transform.position = firePoint.position + new Vector3(0f, randomYOffset, 0f);
+
+        // 2. Set Rotation
+        float dir = Mathf.Sign(firePoint.lossyScale.x);
+        Quaternion checkRotation = (dir < 0) ? Quaternion.Euler(0, 180f, 0) : Quaternion.identity;
+        bullet.transform.rotation = firePoint.rotation * checkRotation;
+
+        // 3. Apply Stats
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.damage = Random.Range(minDamage, maxDamage + 1);
+        }
+
+        // 4. Launch
+        Projectile projectile = bullet.GetComponent<Projectile>();
+        if (projectile != null)
+        {
+            projectile.Launch();
+        }
+    }
+
+    private void PlayShootEffects()
+    {
+        // Shell Ejection
+        if (shellParticleSystem != null)
+        {
+            shellParticleSystem.Emit(1);
+        }
+
+        // Muzzle Flash
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(true);
+            
+            // Restart the disable timer
+            if (muzzleFlashCoroutine != null) StopCoroutine(muzzleFlashCoroutine);
+            muzzleFlashCoroutine = StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
+        }
+    }
+
+    private IEnumerator DisableMuzzleFlashAfter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (muzzleFlashObject != null)
+        {
+            muzzleFlashObject.SetActive(false);
+        }
+        muzzleFlashCoroutine = null;
+    }
+
+    #endregion
+
+    #region Reload Logic
+
+    private IEnumerator ReloadRoutine()
     {
         isReloading = true;
         onReloadStart?.Invoke();
         
-        // Start old mag effect concurrently if needed
-        StartCoroutine(EmitMagazineAfterDelay(oldMagazineDelay));
+        // Schedule magazine drop effect
+        if (oldMagazineVFX != null)
+        {
+            StartCoroutine(EmitMagazineAfterDelay(oldMagazineDelay));
+        }
 
-        // Wait for reload duration
         yield return new WaitForSeconds(reloadDuration);
 
-        // Perform ammo refill logic
+        // Calculate ammo refill
         int needed = magazineSize - currentAmmo;
         int reloadAmount = Mathf.Min(needed, totalAmmo);
         currentAmmo += reloadAmount;
@@ -157,46 +335,17 @@ public class GunController : MonoBehaviour
         isReloading = false;
     }
 
-    IEnumerator EmitMagazineAfterDelay(float delay)
+    private IEnumerator EmitMagazineAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         EmitOldMagazine();
     }
 
-    public int CurrentAmmo => currentAmmo;
-    public int TotalAmmo => totalAmmo;
+    #endregion
 
-    public void AttemptShoot()
-    {
-        if (isReloading)
-        {
-            return;
-        }
+    #region Pooling Callbacks
 
-        // Auto-reload if empty and enabled
-        if (currentAmmo <= 0 && autoReload && totalAmmo > 0)
-        {
-            Reload();
-            return; // Return so we don't shoot while reloading
-        }
-
-        // Check if we have ammo
-        if (currentAmmo <= 0)
-        {
-            return;
-        }
-
-        // Checks if enough time has passed since the last shot
-        if (Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + fireRate;
-        }
-    }
-
-    #region Pooling Methods
-
-    GameObject CreateBullet()
+    private GameObject CreateBullet()
     {
         if (bulletPrefab == null)
         {
@@ -206,7 +355,7 @@ public class GunController : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab);
 
-        // Pass the pool reference to the projectile so it can return itself
+        // Inject pool dependency check
         Projectile projectileScript = bullet.GetComponent<Projectile>();
         if (projectileScript != null)
         {
@@ -216,108 +365,15 @@ public class GunController : MonoBehaviour
         return bullet;
     }
 
-    void OnTakeFromPool(GameObject bullet)
+    private void OnTakeFromPool(GameObject bullet)
     {
-        // Do nothing here regarding position/rotation, 
-        // as that is handled in Shoot() before activation logic runs in Bullet.OnEnable
         bullet.SetActive(true);
     }
 
-    void OnReturnToPool(GameObject bullet)
+    private void OnReturnToPool(GameObject bullet)
     {
         bullet.SetActive(false);
     }
+
     #endregion
-
-    void Shoot()
-    {
-        if (firePoint == null)
-        {
-            Debug.LogError("FirePoint is not assigned in GunController!");
-            return;
-        }
-
-        if (pool == null)
-        {
-            Debug.LogError("Pool is not initialized in GunController!");
-            return;
-        }
-
-        // Get from pool
-        GameObject bullet = pool.Get();
-
-        if (bullet != null)
-        {
-            // Position the bullet with random Y offset
-            float randomYOffset = Random.Range(-yOffset, yOffset);
-            bullet.transform.position = firePoint.position + new Vector3(0f, randomYOffset, 0f);
-
-            // Determine direction based on firePoint scale
-            float dir = Mathf.Sign(firePoint.lossyScale.x);
-
-            // If facing left (negative scale), rotate 180 degrees around Y
-            Quaternion checkRotation = (dir < 0) ? Quaternion.Euler(0, 180f, 0) : Quaternion.identity;
-
-            // Combine with firepoint's actual rotation
-            bullet.transform.rotation = firePoint.rotation * checkRotation;
-
-            // randomize damage logic if Bullet script is present
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-            if (bulletScript != null)
-            {
-                bulletScript.damage = Random.Range(minDamage, maxDamage + 1);
-            }
-
-            // Launch the projectile
-            Projectile projectile = bullet.GetComponent<Projectile>();
-            if (projectile != null)
-            {
-                projectile.Launch();
-            }
-        }
-
-        // Emit shell particle
-        if (shellParticleSystem != null)
-        {
-            shellParticleSystem.Emit(1);
-        }
-
-        // Activate muzzle flash object
-        if (muzzleFlashObject != null)
-        {
-            muzzleFlashObject.SetActive(true);
-        }
-
-        // Start coroutine to disable after duration
-        if (muzzleFlashObject != null)
-        {
-            StartCoroutine(DisableMuzzleFlashAfter(muzzleFlashDuration));
-        }
-
-        // Generate camera impulse
-        ImpulseController.Instance.TriggerShotImpulse(impulseForce);
-
-        // Invoke the shot event
-        onShot?.Invoke();
-
-        // Decrease ammo
-        currentAmmo--;
-    }
-
-    IEnumerator DisableMuzzleFlashAfter(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (muzzleFlashObject != null)
-        {
-            muzzleFlashObject.SetActive(false);
-        }
-    }
-
-    public void EmitOldMagazine()
-    {
-        if (oldMagazineVFX != null)
-        {
-            oldMagazineVFX.Emit(1);
-        }
-    }
 }

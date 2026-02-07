@@ -6041,6 +6041,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42bc628b039db9e47b3c132d22bb4fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  idleClip: {fileID: -4257825657602151848, guid: 763a176352ae490498e55dd2aebff4d8, type: 3}
+  crouchClip: {fileID: -6849121920888504800, guid: 763a176352ae490498e55dd2aebff4d8, type: 3}
 --- !u!60 &2279335130708667456
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -6646,6 +6648,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shot Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 5064095167514221829, guid: c3748a27d6a9f604da132933985884aa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6682,7 +6688,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &4895598546970442221
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7351,6 +7357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pistol
       objectReference: {fileID: 0}
+    - target: {fileID: 8711889500423630020, guid: 7cbfa359799e85e40ae7ec46ba663922, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7486,6 +7496,8 @@ MonoBehaviour:
   baseCollider: {fileID: 4895598546970442221}
   SpriteRendererUpper: {fileID: 1400421462047126869}
   SpriteRendererLower: {fileID: 5854044694046419512}
+  weaponsContainer: {fileID: 1825994351936452351}
+  weaponCrouchOffset: {x: 0, y: -0.25}
   facingDirection: 1
 --- !u!4 &8628319159283260739
 Transform:
@@ -7516,7 +7528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6011394285932699415, guid: e353a38ac98a5804aa2e0c3fe7fcf993, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6651881652384117578, guid: e353a38ac98a5804aa2e0c3fe7fcf993, type: 3}
       propertyPath: m_LocalPosition.x

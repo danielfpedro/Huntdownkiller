@@ -1,20 +1,120 @@
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerMovement))]
 public class CharacterAnimatorController : MonoBehaviour
 {
-    Animator animator;
-    PlayerMovement playerMovement;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    #region Clip Configuration
+    [Header("Animation Clips")]
+    [Tooltip("The animation clip to play when the character is standing still.")]
+    public AnimationClip idleClip;
+
+    [Tooltip("The animation clip to play when the character is crouching.")]
+    public AnimationClip crouchClip;
+    #endregion
+
+    // Dependencies
+    private PlayerMovement playerMovement;
+    private Animator animator;
+
+    // Playables API
+    private PlayableGraph graph;
+    private AnimationClip currentClip;
+
+    private void Start()
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+
+        InitializeGraph();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        animator.SetBool("Crouching", playerMovement.isCrouching);
-        animator.SetBool("Dashing", playerMovement.isDashing);
+        // Graphs must be destroyed manually to avoid memory leaks
+        if (graph.IsValid())
+        {
+            graph.Destroy();
+        }
     }
+
+    private void Update()
+    {
+        if (playerMovement == null) return;
+
+        UpdateAnimationState();
+    }
+
+    #region Graph Management
+
+    private void InitializeGraph()
+    {
+        // Create the graph
+        graph = PlayableGraph.Create("CharacterAnimatorGraph");
+        graph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
+
+        // Create an Output hooked to the Animator
+        AnimationPlayableOutput.Create(graph, "Animation", animator);
+
+        // Start the graph
+        graph.Play();
+
+        // Start default state
+        PlayIdle();
+    }
+
+    private void PlayClip(AnimationClip clip)
+    {
+        if (clip == null || !graph.IsValid()) return;
+        
+        // Avoid recreating the same state
+        if (currentClip == clip) return;
+
+        currentClip = clip;
+
+        // Create a new clip playable
+        var clipPlayable = AnimationClipPlayable.Create(graph, clip);
+
+        // Connect it to the output
+        var output = graph.GetOutput(0);
+        output.SetSourcePlayable(clipPlayable);
+    }
+
+    #endregion
+
+    #region State Logic
+
+    private void UpdateAnimationState()
+    {
+        // Prioritize states based on importance
+        if (playerMovement.isCrouching)
+        {
+            PlayCrouch();
+        }
+        else
+        {
+            // Default to Idle state ("idle and crouch for now")
+            PlayIdle();
+        }
+    }
+
+    private void PlayIdle()
+    {
+        if (idleClip != null)
+        {
+            PlayClip(idleClip);
+        }
+    }
+
+    private void PlayCrouch()
+    {
+        if (crouchClip != null)
+        {
+            PlayClip(crouchClip);
+        }
+    }
+
+    #endregion
 }

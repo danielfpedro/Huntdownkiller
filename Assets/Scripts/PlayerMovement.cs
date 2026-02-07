@@ -37,6 +37,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
 
+    [Header("Weapon Settings")]
+    [Tooltip("Container object for holding weapons, moved during crouch")]
+    public GameObject weaponsContainer;
+    [Tooltip("Local position offset applied to weapons when crouching")]
+    public Vector2 weaponCrouchOffset;
+    private Vector3 initialWeaponLocalPos;
+
     // Dash State
     private float dashTimer;
     private float lastDashTime = -100f;
@@ -57,6 +64,12 @@ public class PlayerMovement : MonoBehaviour
             facingDirection = -1f;
         else
             facingDirection = 1f;
+
+        // Initialize weapon container position
+        if (weaponsContainer != null)
+        {
+            initialWeaponLocalPos = weaponsContainer.transform.localPosition;
+        }
 
         // Initialize stamina
         currentStamina = maxStamina;
@@ -214,7 +227,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetCrouch(bool crouch)
     {
+        if (isCrouching == crouch) return;
+
         isCrouching = crouch;
+
+        if (weaponsContainer != null)
+        {
+            if (isCrouching)
+            {
+                weaponsContainer.transform.localPosition = initialWeaponLocalPos + (Vector3)weaponCrouchOffset;
+            }
+            else
+            {
+                weaponsContainer.transform.localPosition = initialWeaponLocalPos;
+            }
+        }
     }
 
     void ApplyGravity()
