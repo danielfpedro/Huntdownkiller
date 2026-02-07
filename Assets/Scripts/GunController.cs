@@ -6,6 +6,12 @@ using UnityEngine.Events;
 
 public class GunController : MonoBehaviour
 {
+    public enum FireMode
+    {
+        Manual,
+        Automatic
+    }
+
     [Header("Gun Settings")]
     [Tooltip("The position where the bullet is spawned")]
     public Transform firePoint;
@@ -21,6 +27,8 @@ public class GunController : MonoBehaviour
     public float yOffset = 0f;
     [Tooltip("Particle system for shell ejection")]
     public ParticleSystem shellParticleSystem;
+    [Tooltip("Fire mode: Manual for single shots, Automatic for continuous fire")]
+    public FireMode fireMode = FireMode.Manual;
 
     [Header("Muzzle Flash")]
     [Tooltip("The game object for muzzle flash light")]
@@ -46,6 +54,7 @@ public class GunController : MonoBehaviour
     // Unity ObjectPool
     private ObjectPool<GameObject> pool;
     private float nextFireTime = 0f;
+    private bool isFiring = false;
 
     void Awake()
     {
@@ -70,6 +79,28 @@ public class GunController : MonoBehaviour
         {
             muzzleFlashObject.SetActive(false);
         }
+    }
+
+    void Update()
+    {
+        if (isFiring && fireMode == FireMode.Automatic)
+        {
+            AttemptShoot();
+        }
+    }
+
+    public void StartFiring()
+    {
+        isFiring = true;
+        if (fireMode == FireMode.Manual)
+        {
+            AttemptShoot();
+        }
+    }
+
+    public void StopFiring()
+    {
+        isFiring = false;
     }
 
     public void AttemptShoot()

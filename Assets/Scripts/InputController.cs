@@ -27,6 +27,10 @@ public class InputController : MonoBehaviour
     inputActions.Player.Jump.performed += OnJump;
     inputActions.Player.Dash.performed += OnDash;
     inputActions.Player.Next.performed += OnNextWeapon;
+    inputActions.Player.Shot.started += OnPrimaryFireStarted;
+    inputActions.Player.Shot.canceled += OnPrimaryFireCanceled;
+    inputActions.Player.ShotSecondary.started += OnSecondaryFireStarted;
+    inputActions.Player.ShotSecondary.canceled += OnSecondaryFireCanceled;
   }
 
   void OnDisable()
@@ -34,26 +38,15 @@ public class InputController : MonoBehaviour
     inputActions.Player.Jump.performed -= OnJump;
     inputActions.Player.Dash.performed -= OnDash;
     inputActions.Player.Next.performed -= OnNextWeapon;
+    inputActions.Player.Shot.started -= OnPrimaryFireStarted;
+    inputActions.Player.Shot.canceled -= OnPrimaryFireCanceled;
+    inputActions.Player.ShotSecondary.started -= OnSecondaryFireStarted;
+    inputActions.Player.ShotSecondary.canceled -= OnSecondaryFireCanceled;
     inputActions.Disable();
   }
 
   void Update()
   {
-    if (weaponsManager != null)
-    {
-        // Primary Fire
-        if (weaponsManager.CurrentWeapon != null && inputActions.Player.Shot.IsPressed())
-        {
-            weaponsManager.CurrentWeapon.AttemptShoot();
-        }
-
-        // Secondary Fire
-        if (weaponsManager.CurrentSecondaryWeapon != null && inputActions.Player.ShotSecondary.IsPressed())
-        {
-            weaponsManager.CurrentSecondaryWeapon.AttemptShoot();
-        }
-    }
-
     if (playerMovement != null)
     {
       // Move
@@ -85,5 +78,37 @@ public class InputController : MonoBehaviour
   private void OnNextWeapon(InputAction.CallbackContext context)
   {
     weaponsManager?.Next();
+  }
+
+  private void OnPrimaryFireStarted(InputAction.CallbackContext context)
+  {
+    if (weaponsManager?.CurrentWeapon != null)
+    {
+      weaponsManager.CurrentWeapon.StartFiring();
+    }
+  }
+
+  private void OnPrimaryFireCanceled(InputAction.CallbackContext context)
+  {
+    if (weaponsManager?.CurrentWeapon != null)
+    {
+      weaponsManager.CurrentWeapon.StopFiring();
+    }
+  }
+
+  private void OnSecondaryFireStarted(InputAction.CallbackContext context)
+  {
+    if (weaponsManager?.CurrentSecondaryWeapon != null)
+    {
+      weaponsManager.CurrentSecondaryWeapon.StartFiring();
+    }
+  }
+
+  private void OnSecondaryFireCanceled(InputAction.CallbackContext context)
+  {
+    if (weaponsManager?.CurrentSecondaryWeapon != null)
+    {
+      weaponsManager.CurrentSecondaryWeapon.StopFiring();
+    }
   }
 }
