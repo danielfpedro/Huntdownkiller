@@ -205,6 +205,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void AttemptDash()
     {
+        // Must be moving to dash
+        if (Mathf.Abs(velocity.x) < 0.01f) return;
+
         // Cooldown check
         if (Time.time < lastDashTime + dashCooldown) return;
 
