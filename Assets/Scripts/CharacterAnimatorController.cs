@@ -25,18 +25,33 @@ public class CharacterAnimatorController : MonoBehaviour
 
     private void Start()
     {
+        // If no animator is referenced, create a new one on this object
         if (animator == null)
         {
-             animator = GetComponent<Animator>();
+            animator = gameObject.AddComponent<Animator>();
         }
         
         playerMovement = GetComponent<PlayerMovement>();
 
         InitializeGraph();
+
+        // Subscribe to events
+        if (playerMovement != null)
+        {
+            playerMovement.onIdleStart.AddListener(PlayIdle);
+            playerMovement.onCrouchStart.AddListener(PlayCrouch);
+        }
     }
 
     private void OnDestroy()
     {
+        // Unsubscribe from events
+        if (playerMovement != null)
+        {
+            playerMovement.onIdleStart.RemoveListener(PlayIdle);
+            playerMovement.onCrouchStart.RemoveListener(PlayCrouch);
+        }
+
         // Graphs must be destroyed manually to avoid memory leaks
         if (graph.IsValid())
         {
@@ -46,9 +61,9 @@ public class CharacterAnimatorController : MonoBehaviour
 
     private void Update()
     {
-        if (playerMovement == null) return;
-
-        UpdateAnimationState();
+        // No polling needed
+        // if (playerMovement == null) return;
+        // UpdateAnimationState(); 
     }
 
     #region Graph Management
@@ -89,20 +104,6 @@ public class CharacterAnimatorController : MonoBehaviour
     #endregion
 
     #region State Logic
-
-    private void UpdateAnimationState()
-    {
-        // Prioritize states based on importance
-        if (playerMovement.isCrouching)
-        {
-            PlayCrouch();
-        }
-        else
-        {
-            // Default to Idle state ("idle and crouch for now")
-            PlayIdle();
-        }
-    }
 
     private void PlayIdle()
     {

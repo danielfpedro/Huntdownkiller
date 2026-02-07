@@ -1,8 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Events")]
+    public UnityEvent onIdleStart;
+    public UnityEvent onCrouchStart;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float crouchSpeed = 2f;
@@ -120,7 +125,11 @@ public class PlayerMovement : MonoBehaviour
 
         HandleStaminaRegen();
         HandleColliders();
-        HandleWeaponPosition(); // Moved to LateUpdate
+    }
+
+    void LateUpdate()
+    {
+        HandleWeaponPosition();
     }
 
     private void HandleWeaponPosition()
@@ -249,6 +258,15 @@ public class PlayerMovement : MonoBehaviour
         if (isCrouching == crouch) return;
 
         isCrouching = crouch;
+
+        if (isCrouching)
+        {
+            onCrouchStart?.Invoke();
+        }
+        else
+        {
+            onIdleStart?.Invoke();
+        }
     }
 
     void ApplyGravity()

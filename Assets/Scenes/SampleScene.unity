@@ -6043,6 +6043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   idleClip: {fileID: -4257825657602151848, guid: 763a176352ae490498e55dd2aebff4d8, type: 3}
   crouchClip: {fileID: -6849121920888504800, guid: 763a176352ae490498e55dd2aebff4d8, type: 3}
+  animator: {fileID: 0}
 --- !u!60 &2279335130708667456
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -6252,7 +6253,6 @@ GameObject:
   - component: {fileID: 3495515015735210341}
   - component: {fileID: 1192351753171381950}
   - component: {fileID: 4895598546970442221}
-  - component: {fileID: 3651719902515554219}
   - component: {fileID: 72910287782672807}
   - component: {fileID: 8429108771409866152}
   - component: {fileID: 2743352098409960215}
@@ -6409,28 +6409,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &3651719902515554219
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2976353726091346145}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0832fbbe022f2d746b97a3e892d125aa, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &3860020414664791907
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7474,9 +7452,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68aa34ebb144c7a41a952c6dcf9e21fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  onIdleStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onCrouchStart:
+    m_PersistentCalls:
+      m_Calls: []
   moveSpeed: 2.5
-  crouchSpeed: 2
-  jumpForce: 20
+  crouchSpeed: 0
+  jumpForce: 0
   gravity: 100
   dashSpeed: 30
   dashDuration: 0.1
@@ -7497,8 +7481,8 @@ MonoBehaviour:
   SpriteRendererUpper: {fileID: 1400421462047126869}
   SpriteRendererLower: {fileID: 5854044694046419512}
   weaponsContainer: {fileID: 1825994351936452351}
-  weaponCrouchOffset: {x: 0, y: 1}
-  weaponSmoothing: 10
+  weaponCrouchOffset: {x: 0, y: -0.5}
+  weaponSmoothing: 0.15
   facingDirection: 1
 --- !u!4 &8628319159283260739
 Transform:
