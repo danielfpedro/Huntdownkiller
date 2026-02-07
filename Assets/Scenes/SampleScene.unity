@@ -6251,8 +6251,8 @@ GameObject:
   - component: {fileID: 5127756402745655762}
   - component: {fileID: 3330235744027547607}
   - component: {fileID: 3495515015735210341}
-  - component: {fileID: 1192351753171381950}
   - component: {fileID: 4895598546970442221}
+  - component: {fileID: 1192351753171381950}
   - component: {fileID: 72910287782672807}
   - component: {fileID: 8429108771409866152}
   - component: {fileID: 2743352098409960215}
@@ -7462,12 +7462,12 @@ MonoBehaviour:
   crouchSpeed: 0
   jumpForce: 0
   gravity: 100
-  dashSpeed: 30
-  dashDuration: 0.1
+  dashSpeed: 10
+  dashDuration: 0.8
   dashCooldown: 0.5
   maxStamina: 100
   staminaRegenRate: 20
-  dashStaminaCost: 50
+  dashStaminaCost: 10
   staminaRegenDelay: 0.25
   hoverHeight: 0
   rayLength: 1.5
@@ -7476,12 +7476,12 @@ MonoBehaviour:
     m_Bits: 64
   isCrouching: 0
   isDashing: 0
-  upperCollider: {fileID: 1192351753171381950}
-  baseCollider: {fileID: 4895598546970442221}
+  upperCollider: {fileID: 4895598546970442221}
+  baseCollider: {fileID: 1192351753171381950}
   SpriteRendererUpper: {fileID: 1400421462047126869}
   SpriteRendererLower: {fileID: 5854044694046419512}
   weaponsContainer: {fileID: 1825994351936452351}
-  weaponCrouchOffset: {x: 0, y: -0.5}
+  weaponCrouchOffset: {x: 0, y: -0.4}
   weaponSmoothing: 0.15
   facingDirection: 1
 --- !u!4 &8628319159283260739

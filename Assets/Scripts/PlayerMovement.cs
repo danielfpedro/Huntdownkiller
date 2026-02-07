@@ -240,8 +240,8 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDash()
     {
-        // Move
-        transform.Translate(velocity * Time.deltaTime);
+        // Move in World space to match valid movement logic
+        transform.Translate(velocity * Time.deltaTime, Space.World);
 
         // Count down
         dashTimer -= Time.deltaTime;
