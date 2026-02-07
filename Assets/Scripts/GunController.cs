@@ -41,9 +41,9 @@ public class GunController : MonoBehaviour
     [Tooltip("The maximum number of bullets a single magazine can hold.")]
     public int magazineSize = 10;
 
-    [Tooltip("The total amount of ammo available in reserve.")]
-    public int totalAmmo = 100;
-
+    [Tooltip("The number of full magazines available in reserve.")]
+    public int totalMagazines = 10;
+    
     [Tooltip("The time in seconds it takes to complete a reload.")]
     public float reloadDuration = 1.0f;
 
@@ -102,7 +102,7 @@ public class GunController : MonoBehaviour
 
     // Properties
     public int CurrentAmmo => currentAmmo;
-    public int TotalAmmo => totalAmmo;
+    public int TotalMagazines => totalMagazines;
     [Header("UI Settings")]
     [Tooltip("The sprite used for UI representation of this gun.")]
     public Sprite icon; // For UI representation
@@ -140,7 +140,7 @@ public class GunController : MonoBehaviour
     // Debug GUI to track ammo and states
     private void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Total: {totalAmmo} | Mode: {fireMode} | Firing: {isFiring} | Reloading: {isReloading}");
+        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Mags: {totalMagazines} | Mode: {fireMode} | Firing: {isFiring} | Reloading: {isReloading}");
     }
 
     private void Update()
@@ -175,7 +175,7 @@ public class GunController : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        if (isReloading || totalAmmo <= 0 || currentAmmo >= magazineSize)
+        if (isReloading || totalMagazines <= 0 || currentAmmo >= magazineSize)
         {
             return;
         }
@@ -205,7 +205,7 @@ public class GunController : MonoBehaviour
         // Handle auto-reload
         if (currentAmmo <= 0)
         {
-            if (autoReload && totalAmmo > 0)
+            if (autoReload && totalMagazines > 0)
             {
                 Reload();
             }
@@ -329,11 +329,12 @@ public class GunController : MonoBehaviour
 
         yield return new WaitForSeconds(reloadDuration);
 
-        // Calculate ammo refill
-        int needed = magazineSize - currentAmmo;
-        int reloadAmount = Mathf.Min(needed, totalAmmo);
-        currentAmmo += reloadAmount;
-        totalAmmo -= reloadAmount;
+        // Magazine-style reload: discard remaining ammo, use one full magazine
+        if (totalMagazines > 0)
+        {
+            totalMagazines--;
+            currentAmmo = magazineSize;
+        }
 
         isReloading = false;
     }

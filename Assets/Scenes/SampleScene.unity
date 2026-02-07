@@ -3789,6 +3789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   uiContainer: {fileID: 392150189}
+  weaponItemPrefab: {fileID: 6519292007514420310, guid: 4f38475950bf8bd4bacba967bf52dea0, type: 3}
   currentWeaponSize: {x: 100, y: 100}
   otherWeaponsSize: {x: 50, y: 50}
   target: {fileID: 2976353726091346145}
