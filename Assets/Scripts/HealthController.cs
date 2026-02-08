@@ -124,13 +124,14 @@ public class HealthController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Debug.Log("About to call show indicator: " + damage);
         HitIndicatorManager.Instance.ShowIndicator(transform.position, damage.ToString());
         TakeDamage(damage, Vector2.zero);
     }
 
     public void TakeDamage(int damage, Vector2 hitDirection)
     {
+        Debug.Log("TakeDamage called with damage: " + damage);
+        EmojiManager.Instance.ShowEmoji(transform, "<sprite=0>", 1f);
         if (damage <= 0) return;
 
         // Show health bar

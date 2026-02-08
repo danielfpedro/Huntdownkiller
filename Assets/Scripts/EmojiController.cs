@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
-
+using System;
+[Obsolete("This class is deprecated. Use EmojiManager instead for better performance and flexibility.")]
 public class EmojiController : MonoBehaviour
 {
     [Tooltip("The TextMeshPro component for displaying temporary messages.")]
