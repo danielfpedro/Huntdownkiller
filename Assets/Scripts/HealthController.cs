@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
@@ -22,6 +23,19 @@ public class HealthController : MonoBehaviour
     public float bloodEmissionRate = 100f;
     [Tooltip("X offset for blood particles based on hit direction")]
     public float bloodOffsetX = 0.5f;
+
+    [Header("Health Bar")]
+    [Tooltip("Prefab for the health bar UI")]
+    public GameObject healthBarPrefab;
+    [Tooltip("Time in seconds to display the health bar after taking damage")]
+    public float healthBarDisplayTime = 3f;
+    [Tooltip("Offset for positioning the health bar above the character")]
+    public Vector3 worldOffset = Vector3.up * 2f;
+
+    private GameObject healthBarInstance;
+    private RectTransform healthBarRect;
+    private Coroutine healthBarCoroutine;
+    private bool healthBarIsVisible = false;
 
     #region Events
     [Header("Events")]
@@ -53,6 +67,27 @@ public class HealthController : MonoBehaviour
         {
             bloodParticleSystem.Stop();
         }
+
+        // Instantiate health bar
+        GameObject canvasGO = GameObject.Find("Canvas");
+        if (canvasGO != null && healthBarPrefab != null)
+        {
+            healthBarInstance = Instantiate(healthBarPrefab, canvasGO.transform);
+            healthBarRect = healthBarInstance.GetComponent<RectTransform>();
+            CharacterHealthBar ui = healthBarInstance.GetComponent<CharacterHealthBar>();
+            ui.SetTarget(transform);
+            // Start hidden
+            healthBarInstance.SetActive(false);
+            healthBarIsVisible = false;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (healthBarInstance != null)
+        {
+            Destroy(healthBarInstance);
+        }
     }
 
     void Update()
@@ -72,6 +107,19 @@ public class HealthController : MonoBehaviour
                 }
             }
         }
+
+        // Position the health bar above the character
+        UpdateHealthBarPosition();
+    }
+
+    private void UpdateHealthBarPosition()
+    {
+        if (healthBarIsVisible && healthBarRect != null && Camera.main != null)
+        {
+            Vector3 targetPosition = transform.position + worldOffset;
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(targetPosition);
+            healthBarRect.position = screenPos;
+        }
     }
 
     public void TakeDamage(int damage)
@@ -84,6 +132,18 @@ public class HealthController : MonoBehaviour
     public void TakeDamage(int damage, Vector2 hitDirection)
     {
         if (damage <= 0) return;
+
+        // Show health bar
+        if (healthBarInstance != null)
+        {
+            if (healthBarCoroutine != null)
+            {
+                StopCoroutine(healthBarCoroutine);
+            }
+            healthBarInstance.SetActive(true);
+            healthBarIsVisible = true;
+            healthBarCoroutine = StartCoroutine(HideHealthBarAfter(healthBarDisplayTime));
+        }
 
         Debug.Log("About to call show indicator: " + damage);
         HitIndicatorManager.Instance.ShowIndicator(transform.position * new Vector2(1, 2), damage.ToString());
@@ -162,6 +222,16 @@ public class HealthController : MonoBehaviour
         if (bloodParticleSystem != null)
         {
             bloodParticleSystem.Stop();
+        }
+    }
+
+    private System.Collections.IEnumerator HideHealthBarAfter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (healthBarInstance != null)
+        {
+            healthBarIsVisible = false;
+            healthBarInstance.SetActive(false);
         }
     }
 }
