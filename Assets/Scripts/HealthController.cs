@@ -23,6 +23,7 @@ public class HealthController : MonoBehaviour
     [Tooltip("X offset for blood particles based on hit direction")]
     public float bloodOffsetX = 0.5f;
 
+    #region Events
     [Header("Events")]
     [Tooltip("Event triggered when taking damage (passes damage amount)")]
     public UnityEvent<int> onHurt;
@@ -32,6 +33,7 @@ public class HealthController : MonoBehaviour
     public UnityEvent onDeath;
     [Tooltip("Event triggered when health changes (passes new health value)")]
     public UnityEvent<int> onHealthChanged;
+    #endregion
 
     private float flashTimer = 0f;
     private SpriteRenderer spriteRenderer;
@@ -106,6 +108,7 @@ public class HealthController : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(0, currentHealth);
         onHurt?.Invoke(damage);
+
         onHealthChanged?.Invoke(currentHealth);
 
         // Start or prolong flash

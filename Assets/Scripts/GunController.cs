@@ -43,7 +43,7 @@ public class GunController : MonoBehaviour
 
     [Tooltip("The number of full magazines available in reserve. Set to int.MaxValue for infinite ammo.")]
     public int totalMagazines = 10;
-    
+
     [Tooltip("The time in seconds it takes to complete a reload.")]
     public float reloadDuration = 1.0f;
 
@@ -193,23 +193,6 @@ public class GunController : MonoBehaviour
             oldMagazineVFX.Emit(1);
         }
     }
-
-    /// <summary>
-    /// Displays a temporary message on the TextMeshPro component and disables it after the specified duration.
-    /// </summary>
-    /// <param name="text">The text to display.</param>
-    /// <param name="duration">How long to show the text before disabling it.</param>
-    public void ShowText(string text, float duration)
-    {
-        if (displayText == null) return;
-
-        displayText.text = text;
-        displayText.gameObject.SetActive(true);
-        displayText.transform.localPosition = textOffset;
-
-        StartCoroutine(HideTextAfter(duration));
-    }
-
     #endregion
 
     #region Shooting Logic
