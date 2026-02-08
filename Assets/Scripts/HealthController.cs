@@ -130,8 +130,6 @@ public class HealthController : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 hitDirection)
     {
-        Debug.Log("TakeDamage called with damage: " + damage);
-        EmojiManager.Instance.ShowEmoji(transform, "<sprite=0>", 1f);
         if (damage <= 0) return;
 
         // Show health bar
@@ -203,6 +201,7 @@ public class HealthController : MonoBehaviour
 
     public void Die()
     {
+        EmojiManager.Instance.ShowEmoji(transform, "<sprite=2>", 1f);
         onDeath?.Invoke();
     }
 

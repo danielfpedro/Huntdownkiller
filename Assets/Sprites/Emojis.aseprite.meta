@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Emojis
     originalName: 
-    pivot: {x: 2.048387, y: -8.730769}
+    pivot: {x: 1.3510637, y: -8.730769}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,7 +137,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 62
+      width: 94
       height: 26
     spriteID: e65c4ecd264499f4ba1a3bcca664dd8d
     spriteBone: []
@@ -169,7 +169,7 @@ ScriptedImporter:
       cellRect:
         x: 1
         y: 227
-        width: 62
+        width: 94
         height: 26
       spriteId: e65c4ecd264499f4ba1a3bcca664dd8d
     linkedCells: []
