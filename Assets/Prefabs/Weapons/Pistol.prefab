@@ -225,20 +225,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunController
   firePoint: {fileID: 3959512362169915209}
   bulletPrefab: {fileID: 5022244170858640552, guid: c4db1e6d8d80cd24296c9e6ce2836416, type: 3}
+  fireMode: 0
   fireRate: 0.2
   minDamage: 1
   maxDamage: 3
   yOffset: 0
-  shellParticleSystem: {fileID: 5166262442005160983}
-  oldMagazineVFX: {fileID: 2058367706150774012}
-  oldMagazineDelay: 0.2
-  fireMode: 0
   magazineSize: 10
-  totalAmmo: 100
+  totalMagazines: -1
   reloadDuration: 1.2
   autoReload: 1
   muzzleFlashObject: {fileID: 1347378705930813711}
   muzzleFlashDuration: 0.1
+  shellParticleSystem: {fileID: 5166262442005160983}
+  oldMagazineVFX: {fileID: 2058367706150774012}
+  oldMagazineDelay: 0.2
   impulseForce: 0.2
   onShot:
     m_PersistentCalls:
@@ -248,6 +248,7 @@ MonoBehaviour:
       m_Calls: []
   defaultCapacity: 20
   maxPoolSize: 100
+  icon: {fileID: 5319675120200642810, guid: 77cd3f31ac6874d468654830afea8c89, type: 3}
 --- !u!114 &7437391239621748386
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,8 +24,15 @@ public class WeaponItemUI : MonoBehaviour
             }
             if (ammoText != null)
             {
-                int totalReserveAmmo = gunController.TotalMagazines * gunController.magazineSize;
-                ammoText.text = $"{gunController.CurrentAmmo}/{totalReserveAmmo}";
+                if (gunController.TotalMagazines == -1)
+                {
+                    ammoText.text = $"{gunController.CurrentAmmo}/∞";
+                }
+                else
+                {
+                    int totalReserveAmmo = gunController.TotalMagazines * gunController.magazineSize;
+                    ammoText.text = $"{gunController.CurrentAmmo}/{totalReserveAmmo}";
+                }
             }
         }
     }

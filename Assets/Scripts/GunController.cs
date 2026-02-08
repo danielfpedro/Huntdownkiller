@@ -41,7 +41,7 @@ public class GunController : MonoBehaviour
     [Tooltip("The maximum number of bullets a single magazine can hold.")]
     public int magazineSize = 10;
 
-    [Tooltip("The number of full magazines available in reserve.")]
+    [Tooltip("The number of full magazines available in reserve. Set to int.MaxValue for infinite ammo.")]
     public int totalMagazines = 10;
     
     [Tooltip("The time in seconds it takes to complete a reload.")]
@@ -169,7 +169,7 @@ public class GunController : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        if (isReloading || totalMagazines <= 0 || currentAmmo >= magazineSize)
+        if (isReloading || (totalMagazines != -1 && totalMagazines <= 0) || currentAmmo >= magazineSize)
         {
             return;
         }
@@ -199,7 +199,7 @@ public class GunController : MonoBehaviour
         // Handle auto-reload
         if (currentAmmo <= 0)
         {
-            if (autoReload && totalMagazines > 0)
+            if (autoReload && (totalMagazines == -1 || totalMagazines > 0))
             {
                 Reload();
             }
@@ -324,9 +324,12 @@ public class GunController : MonoBehaviour
         yield return new WaitForSeconds(reloadDuration);
 
         // Magazine-style reload: discard remaining ammo, use one full magazine
-        if (totalMagazines > 0)
+        if (totalMagazines == -1 || totalMagazines > 0)
         {
-            totalMagazines--;
+            if (totalMagazines != -1)
+            {
+                totalMagazines--;
+            }
             currentAmmo = magazineSize;
         }
 
