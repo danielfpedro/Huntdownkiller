@@ -137,12 +137,6 @@ public class GunController : MonoBehaviour
         );
     }
 
-    // Debug GUI to track ammo and states
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 400, 20), $"Ammo: {currentAmmo}/{magazineSize} Mags: {totalMagazines} | Mode: {fireMode} | Firing: {isFiring} | Reloading: {isReloading}");
-    }
-
     private void Update()
     {
         if (isFiring && fireMode == FireMode.Automatic)

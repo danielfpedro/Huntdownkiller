@@ -7146,7 +7146,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125425171}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b006e78a999880643bf5bd60fd2472b0, type: 3}
   m_Name: 
@@ -8944,7 +8944,7 @@ MonoBehaviour:
   dashCooldown: 0.1
   maxStamina: 100
   staminaRegenRate: 20
-  dashStaminaCost: 10
+  dashStaminaCost: 50
   staminaRegenDelay: 0.25
   hoverHeight: 0
   rayLength: 1.5
